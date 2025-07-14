@@ -1,0 +1,94 @@
+# Site settings
+site.title: Dokumentasi Astro
+
+# Left Sidebar
+leftSidebar.sponsoredBy: Disponsori oleh
+
+# Footer
+footer.community: Komunitas
+footer.contribute: Berkontribusi
+footer.translatePage: Terjemahkan halaman ini
+footer.sponsor: Dukung Kami
+
+# Used in `<Since>`: Added in: v0.24.0 [NEW]
+since.addedIn: 'Ditambahkan pada versi:'
+since.new: Fitur baru
+since.beta: Versi beta
+
+# Installation Guide
+install.autoTab: CLI Otomatis
+install.manualTab: Instalasi Manual
+
+# `<DeployGuidesNav>` vocabulary
+deploy.sectionTitle: Panduan Deploy
+deploy.altSectionTitle: Panduan Deploy Lainnya
+deploy.ssrTag: Rendering Berdasarkan Permintaan
+deploy.staticTag: Situs Statis
+
+# CMS Guides vocabulary
+cms.navTitle: Panduan CMS Lainnya
+
+# Media Guides vocabulary
+media.navTitle: Panduan DAM Lainnya
+
+# Migration Guides vocabulary
+migration.navTitle: Panduan Migrasi Lainnya
+
+# `<RecipeLinks>` vocabulary
+recipesLink.singular: 'Resep Terkait: '
+recipesLink.plural: Resep Terkait
+
+# 404 Page
+404.title: Tidak Ditemukan
+404.content: Halaman ini tidak ada di tata surya kami.
+404.linkText: Kembali ke Beranda
+
+# Integrations vocabulary
+integrations.changelog: Catatan Perubahan
+integrations.footerTitle: Integrasi Lainnya
+integrations.renderers: Framework Frontend
+integrations.adapters: Adapter
+integrations.others: Integrasi Lain
+integrations.more: Lihat Semua Integrasi
+
+# Checklist component
+checklist.or: atau
+
+# Multiple Choice component
+multipleChoice.defaultCorrect: Jawaban benar!
+multipleChoice.defaultIncorrect: Jawaban salah!
+multipleChoice.submitLabel: Kirim
+
+# Tutorial Progress
+progress.todo: Langkah yang harus dilakukan
+progress.done: Langkah selesai
+
+# Tutorial Navigation
+tutorial.trackerLabel: Progres Belajar
+tutorial.unit: Unit Pembelajaran
+
+# Tutorial
+tutorial.getReady: Yang akan dipelajari
+
+# Code snippet vocabulary
+expressiveCode.terminalWindowFallbackTitle: Jendela Terminal
+expressiveCode.copyButtonTooltip: Salin ke clipboard
+expressiveCode.copyButtonCopied: Berhasil disalin!
+
+# Backend Guides vocabulary
+backend.navTitle: Panduan Backend Lainnya
+
+# Starlight banner
+starlight.title: Ingin membuat dokumentasi sendiri?
+starlight.description: Gunakan template ini untuk memulai.
+
+# `<StudioHeading>` component
+studioHeading.label: Fitur Studio
+
+# Upgrade guide
+upgrade.implementationPR: 'PR Implementasi:'
+
+# DocSearch component strings
+docsearch.button: Cari
+docsearch.shortcutLabel: Tekan tombol / untuk mencari
+docsearch.placeholder: Cari
