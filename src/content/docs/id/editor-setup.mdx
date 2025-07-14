@@ -1,0 +1,159 @@
+---
+title: Pengaturan Editor
+description: Atur editor kode Anda untuk membangun dengan Astro.
+i18nReady: true
+---
+
+import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import { Steps } from '@astrojs/starlight/components';
+import Badge from "~/components/Badge.astro"
+
+Sesuaikan editor kode Anda untuk meningkatkan pengalaman pengembang Astro dan membuka fitur baru.
+
+## VS Code
+
+[VS Code](https://code.visualstudio.com/) adalah editor kode populer untuk pengembang web, yang dibuat oleh Microsoft. Engine VS Code juga mendukung editor kode dalam-browser populer seperti [GitHub Codespaces](https://github.com/features/codespaces) dan [Gitpod](https://gitpod.io/).
+
+Astro bekerja dengan editor kode apa pun. Namun, VS Code adalah editor yang kami rekomendasikan untuk proyek Astro. Kami memelihara [Ekstensi VS Code Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) resmi yang membuka beberapa fitur utama dan peningkatan pengalaman pengembang untuk proyek Astro.
+
+- Penyorotan sintaks untuk file `.astro`.
+- Informasi tipe TypeScript untuk file `.astro`.
+- [VS Code Intellisense](https://code.visualstudio.com/docs/editor/intellisense) untuk penyelesaian kode, petunjuk, dan lainnya.
+
+Untuk memulai, instal [Ekstensi VS Code Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) hari ini.
+
+import ReadMore from '~/components/ReadMore.astro';
+
+<ReadMore>Lihat cara [mengatur TypeScript](/id/guides/typescript/) di proyek Astro Anda.</ReadMore>
+
+## Zed
+
+[Zed](https://zed.dev/) adalah editor kode sumber terbuka yang menambahkan dukungan untuk Astro di versi 0.123.2. Anda dapat menginstal [ekstensi Astro](https://github.com/zed-extensions/astro) di tab Ekstensi IDE. Ekstensi ini mencakup fitur-fitur seperti penyorotan sintaks, penyelesaian kode, dan pemformatan.
+
+## IDE JetBrains
+
+[Webstorm](https://www.jetbrains.com/webstorm/) adalah IDE JavaScript dan TypeScript yang menambahkan dukungan untuk Astro Language Server di versi 2024.2. Pembaruan ini membawa fitur-fitur seperti penyorotan sintaks, penyelesaian kode, dan pemformatan.
+
+Instal plugin resmi melalui [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/20959-astro) atau dengan mencari "Astro" di tab Plugin IDE. Anda dapat mengaktifkan atau menonaktifkan server bahasa di `Settings | Languages & Frameworks | TypeScript | Astro`.
+
+Untuk informasi lebih lanjut tentang dukungan Astro di Webstorm, lihat [Dokumentasi Astro Webstorm resmi](https://www.jetbrains.com/help/webstorm/astro.html).
+
+## Editor Kode Lainnya
+
+Komunitas kami yang luar biasa memelihara beberapa ekstensi untuk editor populer lainnya, termasuk:
+
+- [Ekstensi VS Code di Open VSX](https://open-vsx.org/extension/astro-build/astro-vscode) <span style="margin: 0.25em;"><Badge text="Resmi" /></span> - Ekstensi VS Code Astro resmi, tersedia di registri Open VSX untuk platform terbuka seperti [VSCodium](https://vscodium.com/)
+- [Ekstensi Nova](https://extensions.panic.com/extensions/sciencefidelity/sciencefidelity.astro/) <span style="margin: 0.25em;"><Badge class="neutral-badge" text="Komunitas" /></span> - Menyediakan penyorotan sintaks dan penyelesaian kode untuk Astro di dalam Nova
+- [Plugin Vim](https://github.com/wuelnerdotexe/vim-astro) <span style="margin: 0.25em;"><Badge class="neutral-badge" text="Komunitas" /></span> - Menyediakan penyorotan sintaks, indentasi, dan dukungan pelipatan kode untuk Astro di dalam Vim atau Neovim
+- Plugin Neovim [LSP](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#astro) dan [TreeSitter](https://github.com/virchau13/tree-sitter-astro) <span style="margin: 0.25em;"><Badge class="neutral-badge" text="Komunitas" /></span> - Menyediakan penyorotan sintaks, parsing treesitter, dan penyelesaian kode untuk Astro di dalam Neovim
+- Emacs - Lihat instruksi untuk [Mengonfigurasi Emacs dan Eglot](https://medium.com/@jrmjrm/configuring-emacs-and-eglot-to-work-with-astro-language-server-9408eb709ab0) <span style="margin: 0.25em;"><Badge class="neutral-badge" text="Komunitas" /></span> agar bekerja dengan Astro
+- [Penyorotan sintaks Astro untuk Sublime Text](https://packagecontrol.io/packages/Astro) <span style="margin: 0.25em;"><Badge class="neutral-badge" text="Komunitas" /></span> - Paket Astro untuk Sublime Text, tersedia di manajer paket Sublime Text.
+
+## Editor Dalam-Browser
+
+Selain editor lokal, Astro juga berjalan dengan baik di editor yang di-hosting dalam-browser, termasuk:
+
+- [StackBlitz](https://stackblitz.com/) dan [CodeSandbox](https://codesandbox.io/) - editor online yang berjalan di browser Anda, dengan dukungan penyorotan sintaks bawaan untuk file `.astro`. Tidak perlu instalasi atau konfigurasi!
+- [GitHub.dev](https://github.dev/) - memungkinkan Anda menginstal ekstensi VS Code Astro sebagai [ekstensi web](https://code.visualstudio.com/api/extension-guides/web-extensions), yang memberi Anda akses hanya ke beberapa fitur ekstensi lengkap. Saat ini, hanya penyorotan sintaks yang didukung.
+- [IDX](https://idx.dev) dan [Gitpod](https://gitpod.io/) - lingkungan pengembangan penuh di cloud yang dapat menginstal Ekstensi VS Code Astro resmi dari Open VSX.
+
+## Alat Lainnya
+
+### ESLint
+
+[ESLint](https://eslint.org/) adalah linter populer untuk JavaScript dan JSX. Untuk dukungan Astro, [plugin yang dikelola komunitas](https://github.com/ota-meshi/eslint-plugin-astro) dapat diinstal.
+
+Lihat [Panduan Pengguna proyek](https://ota-meshi.github.io/eslint-plugin-astro/user-guide/) untuk informasi lebih lanjut tentang cara menginstal dan mengatur ESLint untuk proyek Anda.
+
+### Stylelint
+
+[Stylelint](https://stylelint.io/) adalah linter populer untuk CSS. [Konfigurasi Stylelint yang dikelola komunitas](https://github.com/ota-meshi/stylelint-config-html) menyediakan dukungan Astro.
+
+Petunjuk instalasi, integrasi editor, dan informasi tambahan dapat ditemukan di README proyek.
+
+### Prettier
+
+[Prettier](https://prettier.io/) adalah formatter populer untuk JavaScript, HTML, CSS, dan lainnya. Jika Anda menggunakan [Ekstensi VS Code Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) atau [server bahasa Astro di dalam editor lain](#editor-kode-lainnya), pemformatan kode dengan Prettier disertakan.
+
+Untuk menambahkan dukungan untuk memformat file `.astro` di luar editor (misalnya CLI) atau di dalam editor yang tidak mendukung alat editor kami, instal [plugin Prettier Astro resmi](https://github.com/withastro/prettier-plugin-astro).
+
+<Steps>
+1. Instal `prettier` dan `prettier-plugin-astro`.
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npm install --save-dev --save-exact prettier prettier-plugin-astro
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm add --save-dev --save-exact prettier prettier-plugin-astro
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn add --dev --exact prettier prettier-plugin-astro
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+
+2. Buat file konfigurasi `.prettierrc` (atau `.prettierrc.json`, `.prettierrc.mjs`, atau [format lain yang didukung](https://prettier.io/docs/configuration)) di root proyek Anda dan tambahkan `prettier-plugin-astro` ke dalamnya.
+
+    Dalam file ini, tentukan juga secara manual parser untuk file Astro.
+
+    ```json title=".prettierrc"
+    {
+      "plugins": ["prettier-plugin-astro"],
+      "overrides": [
+        {
+          "files": "*.astro",
+          "options": {
+            "parser": "astro"
+          }
+        }
+      ]
+    }
+    ```
+
+3. Secara opsional, instal plugin Prettier lain untuk proyek Anda, dan tambahkan ke file konfigurasi. Plugin tambahan ini mungkin perlu dicantumkan dalam urutan tertentu. Misalnya, jika Anda menggunakan Tailwind, `prettier-plugin-tailwindcss` harus menjadi [plugin Prettier terakhir dalam array plugin](https://github.com/tailwindlabs/prettier-plugin-tailwindcss#compatibility-with-other-prettier-plugins).
+
+    ```json title=".prettierrc"
+    {
+      "plugins": [
+        "prettier-plugin-astro",
+        "prettier-plugin-tailwindcss" // needs to be last
+      ],
+      "overrides": [
+        {
+          "files": "*.astro",
+          "options": {
+            "parser": "astro"
+          }
+        }
+      ]
+    }
+    ```
+
+4. Jalankan perintah berikut di terminal Anda untuk memformat file Anda.
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npx prettier . --write
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm exec prettier . --write
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn exec prettier . --write
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+</Steps>
+
+Lihat [README plugin Prettier](https://github.com/withastro/prettier-plugin-astro/blob/main/README.md) untuk informasi lebih lanjut tentang opsi yang didukungnya, cara mengatur Prettier di dalam VS Code, dan banyak lagi.
