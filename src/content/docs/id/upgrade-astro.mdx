@@ -1,0 +1,204 @@
+---
+title: Mengupgrade Astro
+description: Pelajari cara mengupgrade Astro
+i18nReady: true
+banner:
+  content: |
+    Astro v5 telah hadir! <a href="/id/guides/upgrade-to/v5/">Pelajari cara meng-upgrade situs Anda</a>
+---
+import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import Version from '~/components/Version.astro';
+
+Panduan ini membahas cara memperbarui versi Astro dan dependensi terkait Anda, cara mengetahui apa yang berubah dari satu versi ke versi berikutnya, dan cara memahami sistem penomoran versi Astro dan pembaruan dokumentasi yang sesuai.
+
+## Apa yang telah berubah?
+
+Rilis Astro terbaru adalah <Version pkgName="astro" />.
+
+Anda dapat menemukan daftar lengkap semua perubahan di [changelog Astro](https://github.com/withastro/astro/blob/main/packages/astro/CHANGELOG.md), dan instruksi penting untuk meng-upgrade ke setiap [versi mayor](#perubahan-mayor) baru di [panduan upgrade](#panduan-upgrade) kami.
+
+## Upgrade ke versi terbaru
+
+Perbarui versi Astro proyek Anda dan semua integrasi resmi ke versi terbaru dengan satu perintah menggunakan manajer paket Anda:
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # Upgrade Astro dan integrasi resmi bersamaan
+  npx @astrojs/upgrade
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # Upgrade Astro dan integrasi resmi bersamaan
+  pnpm dlx @astrojs/upgrade
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # Upgrade Astro dan integrasi resmi bersamaan
+  yarn dlx @astrojs/upgrade
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+### Upgrade Manual
+
+Untuk memperbarui Astro dan integrasi ke versi saat ini secara manual, gunakan perintah yang sesuai untuk manajer paket Anda.
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # Contoh: upgrade Astro dengan integrasi React dan Partytown
+  npm install astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # Contoh: upgrade Astro dengan integrasi React dan Partytown
+  pnpm add astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # Contoh: upgrade Astro dengan integrasi React dan Partytown
+  yarn add astro@latest @astrojs/react@latest @astrojs/partytown@latest
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+### Instal nomor versi tertentu
+
+Untuk menginstal [versi Astro](https://www.npmjs.com/package/astro?activeTab=versions) atau integrasi tertentu, gunakan perintah yang sesuai untuk manajer paket Anda.
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  npm install astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  pnpm add astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  yarn add astro@4.5.3 @astrojs/react@3.0.10
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+## Pembaruan Dokumentasi
+
+Dokumentasi ini diperbarui untuk setiap [rilis minor](#perubahan-minor) dan [rilis versi mayor](#perubahan-mayor). Ketika fitur baru ditambahkan, atau penggunaan yang ada berubah, dokumen akan diperbarui untuk mencerminkan **perilaku Astro saat ini**. Jika proyek Anda tidak diperbarui, maka Anda mungkin melihat beberapa perilaku tidak sesuai dengan dokumentasi terbaru.
+
+Fitur baru ditambahkan ke dokumen dengan nomor versi spesifik di mana mereka ditambahkan. Ini berarti bahwa jika Anda belum memperbarui ke rilis Astro terbaru, beberapa fitur yang didokumentasikan mungkin tidak tersedia. Selalu periksa nomor versi `Added in:` dan pastikan proyek Anda diperbarui sebelum mencoba menggunakan fitur baru!
+
+Jika Anda belum meng-upgrade ke versi mayor Astro terbaru, Anda mungkin menemukan perbedaan signifikan antara dokumentasi Astro dan perilaku proyek Anda. Kami sangat menyarankan untuk meng-upgrade ke versi mayor Astro saat ini sesegera mungkin. Baik kode maupun dokumentasi untuk versi sebelumnya tidak didukung.
+
+### Panduan Upgrade
+
+Setelah setiap [rilis versi mayor](#perubahan-mayor), Anda akan menemukan **panduan upgrade** dengan informasi tentang perubahan penting dan instruksi untuk meng-upgrade kode proyek Anda.
+
+Halaman dokumentasi utama Astro selalu **akurat untuk versi Astro yang dirilis terbaru**. Halaman tersebut tidak menjelaskan atau membandingkan bagaimana hal-hal bekerja di versi sebelumnya, juga tidak menyoroti perilaku yang diperbarui atau diubah.
+
+Lihat panduan upgrade di bawah ini untuk penjelasan perubahan, membandingkan versi baru dengan versi lama. Panduan upgrade mencakup semua yang mungkin mengharuskan Anda untuk mengubah kode Anda sendiri: perubahan yang merusak, depresiasi, penghapusan dan penggantian fitur, serta panduan penggunaan yang diperbarui. Setiap perubahan pada Astro mencakup bagian "Apa yang harus saya lakukan?" untuk membantu Anda berhasil memperbarui kode proyek Anda.
+
+- [Upgrade ke v5](/id/guides/upgrade-to/v5/)
+- [Upgrade ke v4](/id/guides/upgrade-to/v4/)
+- [Upgrade ke v3](/id/guides/upgrade-to/v3/)
+- [Upgrade ke v2](/id/guides/upgrade-to/v2/)
+- [Upgrade ke v1](/id/guides/upgrade-to/v1/)
+
+### Dokumen Lama (Tidak Terawat)
+
+Dokumentasi untuk versi Astro yang lebih lama tidak terawat, tetapi tersedia sebagai snapshot statis. Gunakan versi dokumen ini jika Anda tidak dapat meng-upgrade proyek Anda, tetapi masih ingin berkonsultasi dengan panduan dan referensi:
+
+- [snapshot v4.16.17 yang tidak terawat](https://v4.docs.astro.build/en/getting-started/)
+- [snapshot v3.6.3 yang tidak terawat](https://docs-git-v3-docs-unmaintained-astrodotbuild.vercel.app/)
+- [snapshot v2.10.15 yang tidak terawat](https://deploy-preview-4405--astro-docs-2.netlify.app/en/getting-started/)
+
+## Penomoran Versi Semantik
+
+Astro berusaha untuk mematuhi sebisa mungkin [penomoran versi semantik](https://semver.org/), yaitu seperangkat aturan yang digunakan pengembang untuk menentukan cara menetapkan nomor versi ke rilis. Versi semantik mengikuti pola yang dapat diprediksi untuk menginformasikan pengguna tentang jenis perubahan yang dapat mereka harapkan dari satu versi ke versi berikutnya.
+
+Penomoran versi semantik memberlakukan pola `X.Y.Z` untuk nomor versi perangkat lunak. Nilai-nilai ini mewakili pembaruan **mayor (X)**, **minor (Y)**, dan **patch (Z)**.
+
+### Perubahan Patch
+
+Perubahan patch adalah perubahan yang paling tidak mengganggu. Mereka tidak mengubah cara Anda menggunakan Astro, dan tidak ada perubahan pada kode Anda sendiri yang diperlukan saat Anda memperbarui.
+
+Ketika Astro mengeluarkan versi "patch", angka terakhir meningkat. (misalnya `astro@4.3.14` -> `astro@4.3.15`)
+
+Patch dapat dirilis karena alasan seperti:
+
+- Perubahan internal yang tidak mengubah fungsionalitas Astro:
+  - refaktor
+  - peningkatan kinerja
+  - peningkatan atau perubahan cakupan pengujian
+  - penyelarasan dengan dokumentasi yang disebutkan dan perilaku yang diharapkan
+- Peningkatan pada pesan log dan kesalahan.
+- Rilis ulang setelah rilis yang gagal.
+
+Perubahan patch juga mencakup **sebagian besar perbaikan bug**, bahkan dalam kasus di mana pengguna memanfaatkan perilaku yang tidak disengaja atau tidak diinginkan yang ada.
+
+### Perubahan Minor
+
+Rilis minor terutama memperkenalkan fitur dan peningkatan baru yang mungkin ingin Anda coba, tetapi tidak memerlukan perubahan pada kode Anda. Beberapa fitur yang ada mungkin juga **didepresiasi** (ditandai untuk dihapus di versi mendatang sambil terus berfungsi) dalam rilis minor, memberi Anda kesempatan untuk bersiap menghadapi penghapusan akhirnya.
+
+Rilis minor mencakup perubahan seperti:
+
+- **Depresiasi** fitur/opsi yang ada dengan peringatan bahwa mereka akan dihapus dalam rilis mayor yang akan datang.
+- Pengenalan fungsionalitas baru.
+- Pengenalan opsi baru di kait integrasi.
+- Pengenalan fungsionalitas baru di `astro/app`, terutama digunakan untuk membuat adaptor baru.
+
+Rilis minor juga dapat mencakup perubahan patch yang lebih kecil pada saat yang bersamaan.
+
+### Perubahan Mayor
+
+Rilis mayor akan mencakup perubahan yang merusak setidaknya beberapa kode yang ada. Perubahan yang merusak ini selalu didokumentasikan dalam panduan "Upgrade ke vX" di Astro.
+
+Rilis mayor memungkinkan Astro untuk membuat perubahan signifikan tidak hanya pada logika internal, tetapi juga pada perilaku dan penggunaan yang dimaksudkan. Dokumentasi akan diperbarui untuk mencerminkan versi terbaru saja, dan **snapshot statis yang tidak terawat dari dokumen lama** tersedia sebagai catatan sejarah untuk proyek lama yang belum di-upgrade.
+
+Rilis mayor mencakup perubahan seperti:
+
+- Penghapusan fungsionalitas yang sebelumnya didepresiasi.
+- Perubahan fungsionalitas yang ada.
+- Perubahan opsi yang ada di kait integrasi.
+- Perubahan opsi dan fungsionalitas yang ada di `astro/app`, terutama digunakan untuk membuat adaptor baru.
+
+Rilis mayor juga dapat mencakup beberapa perubahan non-breaking dan peningkatan yang biasanya akan dirilis secara terpisah dalam rilis minor atau patch.
+
+### Pengecualian
+
+- **Fitur eksperimental**. Merilis versi Astro tanpa mematuhi penomoran versi semantik memungkinkan pengembang Astro fleksibilitas terbesar untuk mengeksplorasi, dan bahkan secara radikal mengubah arah, selama pengembangan fitur eksperimental. Oleh karena itu, perilaku fitur-fitur ini dapat berubah dalam perubahan minor dan patch.
+
+  Fitur-fitur ini biasanya disertai dengan tahap [Request for Consideration (RFC) tahap 3](https://github.com/withastro/roadmap#stage-3-rfc--development) yang sedang berlangsung dan publik. Diharapkan pengguna beta akan mengikuti pembaruan, dan meninggalkan umpan balik awal pada diskusi untuk membantu memandu pengembangan fitur-fitur ini.
+
+  Setelah fitur-fitur ini keluar dari periode eksperimentalnya, mereka akan mengikuti kontrak penomoran versi semantik normal.
+
+- **Peningkatan pada dokumentasi** (misalnya referensi dan pesan kesalahan). Mereka dibangun dari sumber untuk repositori `docs`. Ini memungkinkan Astro untuk dengan cepat memperbarui perbaikan dan peningkatan dokumen dalam kasus di mana konten sumber dokumentasi disimpan di repositori `astro` utama.
+
+### Kebijakan dukungan dan upgrade Node.js
+
+#### Dukungan
+
+- Astro mendukung versi Node.js [**_Maintenance_ LTS terbaru**](https://nodejs.org/en/about/previous-releases#release-schedule).
+- Astro mendukung versi Node.js [**_Active_ LTS saat ini**](https://nodejs.org/en/about/previous-releases#release-schedule).
+- Astro dapat mendukung versi ganjil Node.js.
+
+#### Upgrade
+
+Aturan berikut mendefinisikan kapan Astro dapat mendepresiasi, menjatuhkan, atau menambahkan dukungan untuk versi Node.js:
+
+- Versi ganjil Node.js dapat didepresiasi dan/atau dijatuhkan ketika versi genap Node.js berikutnya diterbitkan. Perubahan ini dapat terjadi dalam rilis **minor** Astro, setelah periode yang wajar dari dukungan yang diperpanjang sebagaimana diputuskan oleh tim Astro Core.
+- Meng-upgrade versi minimum **_Maintenance_ LTS** (dalam rentang mayor yang sama, misalnya dari `v18.14.*` ke `v18.20.*`) Node.js dapat terjadi dalam rilis **minor** Astro.
+  - Pengecualian keamanan: Jika kerentanan keamanan di Node.js yang **memengaruhi Astro** diungkapkan dan diperbaiki, tim Core dapat menaikkan versi minimum **_Maintenance_ LTS** dalam rilis **patch**.
+- Meng-upgrade versi minor atau mayor Node.js (**bukan** Maintenance LTS) hanya terjadi pada versi mayor Astro.
+  - Pengecualian keamanan: Jika kerentanan keamanan di Node.js yang **memengaruhi Astro** diungkapkan dan diperbaiki, tim Core dapat menaikkan versi minimum dalam rilis **minor**.
+
+### Pemeliharaan yang diperpanjang
+
+Tim Core akan menyediakan pemeliharaan yang diperpanjang **hanya untuk perbaikan keamanan** untuk satu versi mayor sebelumnya. Ini berarti bahwa jika versi mayor saat ini adalah `v4.*`, tim Core akan melakukan *back port* perbaikan keamanan dan mengeluarkan rilis `v3.*` baru.
