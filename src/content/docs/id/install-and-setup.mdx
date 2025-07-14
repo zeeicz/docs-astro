@@ -1,0 +1,329 @@
+---
+title: Instal Astro
+sidebar:
+  label: Instalasi
+description: 'Cara menginstal Astro dan memulai proyek baru.'
+i18nReady: true
+banner:
+  content: |
+    Astro v5 telah hadir! <a href="/id/guides/upgrade-to/v5/">Pelajari cara meng-upgrade situs Anda</a>
+---
+import { Tabs, TabItem, FileTree, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import ReadMore from '~/components/ReadMore.astro';
+
+Perintah CLI [`create astro`](#instal-dari-wizard-cli) adalah cara tercepat untuk memulai proyek Astro baru dari awal. Ini akan memandu Anda melalui setiap langkah pengaturan proyek Astro baru Anda dan memungkinkan Anda memilih dari beberapa template starter resmi yang berbeda.
+
+Anda juga dapat menjalankan perintah CLI dengan flag `template` untuk memulai proyek Anda menggunakan tema atau template starter yang sudah ada. Jelajahi [showcase tema dan starter](https://astro.build/themes/) kami di mana Anda dapat menelusuri tema untuk blog, portofolio, situs dokumentasi, halaman arahan, dan banyak lagi!
+
+Untuk menginstal Astro secara manual, lihat [panduan instalasi manual langkah demi langkah](#pengaturan-manual) kami.
+
+:::tip[Pratinjau Online]
+Lebih suka mencoba Astro di browser Anda? Kunjungi [astro.new](https://astro.new/) untuk menelusuri template starter kami dan membuat proyek Astro baru tanpa pernah meninggalkan browser Anda.
+:::
+
+## Prasyarat
+
+- **Node.js** - `v18.20.8` atau `v20.3.0`, `v22.0.0` atau lebih tinggi. (`v19` dan `v21` tidak didukung.)
+- **Editor teks** - Kami merekomendasikan [VS Code](https://code.visualstudio.com/) dengan [Ekstensi Astro Resmi](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode) kami.
+- **Terminal** - Astro diakses melalui antarmuka baris perintahnya (CLI).
+
+## Kompatibilitas Browser
+
+Astro dibangun dengan Vite yang secara default menargetkan browser dengan dukungan JavaScript modern. Untuk referensi lengkap, Anda dapat melihat [daftar versi browser yang saat ini didukung di Vite](https://vite.dev/guide/build.html#browser-compatibility).
+
+## Instal dari wizard CLI
+
+Anda dapat menjalankan `create astro` di mana saja di mesin Anda, jadi tidak perlu membuat direktori kosong baru untuk proyek Anda sebelum Anda mulai. Jika Anda belum memiliki direktori kosong untuk proyek baru Anda, wizard akan membantu membuatnya secara otomatis.
+
+<Steps>
+1. Jalankan perintah berikut di terminal Anda untuk memulai wizard instalasi:
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      # buat proyek baru dengan npm
+      npm create astro@latest
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      # buat proyek baru dengan pnpm
+      pnpm create astro@latest
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      # buat proyek baru dengan yarn
+      yarn create astro
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+
+    Jika semua berjalan lancar, Anda akan melihat pesan sukses diikuti dengan beberapa langkah selanjutnya yang direkomendasikan.
+    
+2. Sekarang setelah proyek Anda dibuat, Anda dapat **`cd`** ke direktori proyek baru Anda untuk mulai menggunakan Astro.
+
+3. Jika Anda melewatkan langkah "Instal dependensi?" selama wizard CLI, pastikan untuk menginstal dependensi Anda sebelum melanjutkan.
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npm install
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm install
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn install
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+
+4. Anda sekarang dapat [memulai server dev Astro](/id/develop-and-build/#memulai-server-pengembangan-astro) dan melihat pratinjau langsung proyek Anda saat Anda membangun!
+</Steps>
+
+## Flag instalasi CLI
+
+Anda dapat menjalankan perintah `create astro` dengan flag tambahan untuk menyesuaikan proses penyiapan (misalnya menjawab "ya" untuk semua pertanyaan, melewati animasi Houston) atau proyek baru Anda (misalnya menginstal git atau tidak, menambahkan integrasi).
+
+<ReadMore>Lihat [semua flag perintah `create astro` yang tersedia](https://github.com/withastro/astro/blob/main/packages/create-astro/README.md)</ReadMore>
+
+### Tambahkan integrasi
+
+Anda dapat memulai proyek Astro baru dan menginstal [integrasi resmi](/id/guides/integrations-guide/) atau integrasi komunitas apa pun yang mendukung perintah `astro add` pada saat yang sama dengan meneruskan argumen `--add` ke perintah `create astro`.
+
+Jalankan perintah berikut di terminal Anda, ganti integrasi apa pun yang mendukung perintah `astro add`:
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # buat proyek baru dengan React dan Partytown
+  npm create astro@latest -- --add react --add partytown
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # buat proyek baru dengan React dan Partytown
+  pnpm create astro@latest --add react --add partytown
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # buat proyek baru dengan React dan Partytown
+  yarn create astro --add react --add partytown
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+### Gunakan tema atau template starter
+
+Anda bisa memulai proyek Astro baru berdasarkan [contoh resmi](https://github.com/withastro/astro/tree/main/examples) atau branch `main` dari repositori GitHub mana pun dengan meneruskan argumen `--template` ke perintah `create astro`.
+
+Jalankan perintah berikut di terminal Anda, ganti nama template starter Astro resmi, atau nama pengguna dan repositori GitHub dari tema yang ingin Anda gunakan:
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  # buat proyek baru dengan contoh resmi
+  npm create astro@latest -- --template <example-name>
+
+  # buat proyek baru berdasarkan branch utama repositori GitHub
+  npm create astro@latest -- --template <github-username>/<github-repo>
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  # buat proyek baru dengan contoh resmi
+  pnpm create astro@latest --template <example-name>
+  
+  # buat proyek baru berdasarkan branch utama repositori GitHub
+  pnpm create astro@latest --template <github-username>/<github-repo>
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  # buat proyek baru dengan contoh resmi
+  yarn create astro --template <example-name>
+  
+  # buat proyek baru berdasarkan branch utama repositori GitHub
+  yarn create astro --template <github-username>/<github-repo>
+  ```
+  </Fragment>
+</PackageManagerTabs>
+
+Secara default, perintah ini akan menggunakan branch `main` dari repositori template. Untuk menggunakan nama branch yang berbeda, teruskan sebagai bagian dari argumen `--template`: `<github-username>/<github-repo>#<branch>`.
+
+## Pengaturan Manual
+
+Panduan ini akan memandu Anda melalui langkah-langkah untuk menginstal dan mengonfigurasi proyek Astro baru secara manual.
+
+Jika Anda lebih suka tidak menggunakan alat CLI `create astro` otomatis kami, Anda dapat menyiapkan proyek Anda sendiri dengan mengikuti panduan di bawah ini.
+
+<Steps>
+1. Buat direktori Anda
+
+    Buat direktori kosong dengan nama proyek Anda, lalu navigasikan ke dalamnya.
+
+    ```bash
+    mkdir my-astro-project
+    cd my-astro-project
+    ```
+
+    Setelah Anda berada di direktori baru, buatlah file **`package.json`** proyek Anda. Ini adalah cara Anda akan mengelola dependensi proyek Anda, termasuk Astro. Jika Anda tidak terbiasa dengan format file ini, jalankan perintah berikut untuk membuatnya.
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npm init --yes
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm init 
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn init --yes
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+
+2. Instal Astro
+
+    Pertama, instal dependensi proyek Astro di dalam proyek Anda.
+
+    :::note[Penting]
+    Astro harus diinstal secara lokal, tidak secara global. Pastikan Anda *tidak* menjalankan `npm install -g astro` `pnpm add -g astro` atau `yarn add global astro`.
+    :::
+
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npm install astro
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm add astro
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn add astro
+      ```
+      </Fragment>
+    </PackageManagerTabs>
+
+    Kemudian, ganti bagian "scripts" *placeholder* apa pun dari `package.json` Anda dengan yang berikut ini:
+
+    ```json title="package.json" del={3} ins={4-6}
+    {
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview"
+      },
+    }
+    ```
+
+    Anda akan menggunakan skrip ini nanti dalam panduan untuk memulai Astro dan menjalankan perintah-perintahnya yang berbeda.
+
+3. Buat halaman pertama Anda
+
+    Di editor teks Anda, buat file baru di direktori Anda di `src/pages/index.astro`. Ini akan menjadi halaman Astro pertama Anda di proyek.
+
+    Untuk panduan ini, salin dan tempel cuplikan kode berikut (termasuk tanda hubung `---`) ke dalam file baru Anda:
+
+    ```astro title="src/pages/index.astro"
+    ---
+    // Selamat datang di Astro! Semua yang ada di antara pagar kode triple-dash ini
+    // adalah "frontmatter komponen" Anda. Itu tidak pernah berjalan di browser.
+    console.log('Ini berjalan di terminal Anda, bukan browser!');
+    ---
+    <html>
+      <body>
+        <h1>Halo, Dunia!</h1>
+      </body>
+    </html>
+    <style>
+      h1 {
+        color: orange;
+      }
+    </style>
+    ```
+
+4. Buat aset statis pertama Anda
+
+    Anda juga ingin membuat direktori `public/` untuk menyimpan aset statis Anda. Astro akan selalu menyertakan aset-aset ini dalam *build* akhir Anda, sehingga Anda dapat dengan aman mereferensikannya dari dalam *template* komponen Anda.
+
+    Di editor teks Anda, buat file baru di direktori Anda di `public/robots.txt`. `robots.txt` adalah file sederhana yang sebagian besar situs akan sertakan untuk memberi tahu bot pencari seperti Google cara memperlakukan situs Anda.
+
+    Untuk panduan ini, salin dan tempel cuplikan kode berikut ke dalam file baru Anda:
+
+    ```diff title="public/robots.txt"
+    # Contoh: Izinkan semua bot untuk memindai dan mengindeks situs Anda.
+    # Sintaks lengkap: [https://developers.google.com/search/docs/advanced/robots/create-robots-txt](https://developers.google.com/search/docs/advanced/robots/create-robots-txt)
+    User-agent: *
+    Allow: /
+    ```
+
+5. Buat `astro.config.mjs`
+
+    Astro dikonfigurasi menggunakan `astro.config.mjs`. File ini opsional jika Anda tidak perlu mengonfigurasi Astro, tetapi Anda mungkin ingin membuatnya sekarang.
+
+    Buat `astro.config.mjs` di *root* proyek Anda, dan salin kode di bawah ini ke dalamnya:
+
+    ```js title="astro.config.mjs"
+    import { defineConfig } from "astro/config";
+
+    // [https://astro.build/config](https://astro.build/config)
+    export default defineConfig({});
+    ```
+
+    Jika Anda ingin menyertakan [komponen *framework* UI](/id/guides/framework-components/) seperti React, Svelte, dll. atau menggunakan alat lain seperti MDX atau Partytown di proyek Anda, di sinilah Anda akan [mengimpor dan mengonfigurasi integrasi secara manual](/id/guides/integrations-guide/).
+
+    Baca [referensi konfigurasi API Astro](/id/reference/configuration-reference/) Astro untuk informasi lebih lanjut.
+
+6. Tambahkan dukungan TypeScript
+
+    TypeScript dikonfigurasi menggunakan `tsconfig.json`. Bahkan jika Anda tidak menulis kode TypeScript, file ini penting agar alat seperti Astro dan VS Code tahu cara memahami proyek Anda. Beberapa fitur (seperti impor paket npm) tidak sepenuhnya didukung di editor tanpa file `tsconfig.json`. 
+
+    Jika Anda memang bermaksud menulis kode TypeScript, menggunakan *template* Astro `strict` atau `strictest` direkomendasikan. Anda dapat melihat dan membandingkan tiga konfigurasi *template* di [astro/tsconfigs/](https://github.com/withastro/astro/blob/main/packages/astro/tsconfigs/).
+
+    Buat `tsconfig.json` di *root* proyek Anda, dan salin kode di bawah ini ke dalamnya. (Anda dapat menggunakan `base`, `strict`, atau `strictest` untuk *template* TypeScript Anda):
+
+    ```json title="tsconfig.json" "base"
+    {
+      "extends": "astro/tsconfigs/base"
+    }
+    ```
+
+    Baca [panduan pengaturan TypeScript Astro](/id/guides/typescript/#setup) untuk informasi lebih lanjut.
+
+7. Langkah Selanjutnya
+
+    Jika Anda telah mengikuti langkah-langkah di atas, direktori proyek Anda sekarang akan terlihat seperti ini:
+
+    <FileTree>
+    - node_modules/
+    - public/
+      - robots.txt
+    - src/
+      - pages/
+        - index.astro
+    - astro.config.mjs
+    - package-lock.json or `yarn.lock`, `pnpm-lock.yaml`, etc.
+    - package.json
+    - tsconfig.json
+    </FileTree>
+
+8. Anda sekarang dapat [memulai server dev Astro](/id/develop-and-build/#memulai-server-pengembangan-astro) dan melihat pratinjau langsung proyek Anda saat Anda membangun!
+
+</Steps>
