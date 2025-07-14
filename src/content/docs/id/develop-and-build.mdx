@@ -1,0 +1,149 @@
+---
+title: Mengembangkan dan Membangun
+description: 'Cara memulai pengerjaan proyek baru.'
+i18nReady: true
+---
+import { Tabs, TabItem, FileTree, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+import ReadMore from '~/components/ReadMore.astro';
+
+Setelah Anda memiliki proyek Astro, sekarang Anda siap membangun dengan Astro! 🚀
+
+## Edit proyek Anda
+
+Untuk membuat perubahan pada proyek Anda, buka folder proyek Anda di editor kode. Bekerja dalam mode pengembangan dengan dev server berjalan memungkinkan Anda melihat pembaruan pada situs Anda saat Anda mengedit kode.
+
+Anda juga dapat [mengustomisasi aspek lingkungan pengembangan Anda](#konfigurasi-lingkungan-pengembangan-anda) seperti mengonfigurasi TypeScript atau menginstal ekstensi editor Astro resmi.
+
+### Memulai server pengembangan Astro
+
+Astro hadir dengan server pengembangan bawaan yang memiliki semua yang Anda butuhkan untuk pengembangan proyek. Perintah CLI `astro dev` akan memulai server pengembangan lokal sehingga Anda dapat melihat situs web baru Anda beraksi untuk pertama kalinya.
+
+Setiap template starter dilengkapi dengan skrip yang telah dikonfigurasi yang akan menjalankan `astro dev` untuk Anda. Setelah masuk ke direktori proyek Anda, gunakan pengelola paket favorit Anda untuk menjalankan perintah ini dan memulai server pengembangan Astro.
+
+<Tabs>
+  <TabItem label="npm">
+  ```shell
+  npm run dev
+  ```
+  </TabItem>
+  <TabItem label="pnpm">
+  ```shell
+  pnpm run dev
+  ```
+  </TabItem>
+  <TabItem label="yarn">
+  ```shell
+  yarn run dev
+  ```
+  </TabItem>
+</Tabs>
+
+
+Jika semuanya berjalan lancar, Astro sekarang akan menyajikan proyek Anda di [http://localhost:4321/](http://localhost:4321/). Kunjungi tautan tersebut di browser Anda dan lihat situs baru Anda!
+
+### Bekerja dalam mode pengembangan
+
+Astro akan memantau perubahan file secara langsung di direktori `src/` Anda dan memperbarui pratinjau situs Anda saat Anda membangun, jadi Anda tidak perlu me-restart server saat Anda melakukan perubahan selama pengembangan. Anda akan selalu dapat melihat versi situs Anda yang terkini di browser saat dev server berjalan.
+
+Saat melihat situs Anda di browser, Anda akan memiliki akses ke [toolbar dev Astro](/id/guides/dev-toolbar/). Saat Anda membangun, itu akan membantu Anda memeriksa [island](/id/concepts/islands/) Anda, menemukan masalah aksesibilitas, dan banyak lagi.
+
+Jika Anda tidak dapat membuka proyek Anda di browser setelah memulai dev server, kembali ke terminal tempat Anda menjalankan perintah `dev` dan periksa pesan yang ditampilkan. Ini akan memberi tahu Anda jika terjadi kesalahan, atau jika proyek Anda disajikan di URL yang berbeda dari [http://localhost:4321/](http://localhost:4321/).
+
+## Membangun dan melihat pratinjau situs Anda
+
+Untuk memeriksa versi situs Anda yang akan dibuat pada waktu build, keluar dari dev server (<kbd>Ctrl</kbd> + <kbd>C</kbd>) dan jalankan perintah build yang sesuai untuk package manager Anda di terminal:
+
+    <Tabs>
+      <TabItem label="npm">
+      ```shell
+      npm run build
+      ```
+      </TabItem>
+      <TabItem label="pnpm">
+      ```shell
+      pnpm build
+      ```
+      </TabItem>
+      <TabItem label="yarn">
+      ```shell
+      yarn run build
+      ```
+      </TabItem>
+    </Tabs>
+
+Astro akan membangun versi situs Anda yang siap deploy di folder terpisah (`dist/` secara default) dan Anda dapat memantau kemajuannya di terminal. Ini akan memberi tahu Anda tentang kesalahan build apa pun di proyek Anda sebelum Anda deploy ke produksi. Jika TypeScript dikonfigurasi ke `strict` atau `strictest`, skrip `build` juga akan memeriksa proyek Anda untuk kesalahan tipe.
+
+Ketika build selesai, jalankan perintah `preview` yang sesuai (misalnya `npm run preview`) di terminal Anda dan Anda dapat melihat versi situs Anda yang telah dibangun secara lokal di jendela pratinjau browser yang sama.
+
+Perhatikan bahwa ini melihat pratinjau kode Anda seperti yang ada saat perintah build terakhir dijalankan. Ini dimaksudkan untuk memberi Anda pratinjau tentang bagaimana situs Anda akan terlihat saat deploy ke web. Perubahan apa pun yang Anda buat pada kode Anda setelah build **tidak** akan tercermin saat Anda melihat pratinjau situs Anda sampai Anda menjalankan perintah build lagi.
+
+Gunakan (<kbd>Ctrl</kbd> + <kbd>C</kbd>) untuk keluar dari pratinjau dan menjalankan perintah terminal lain, seperti memulai ulang dev server untuk kembali ke [bekerja dalam mode pengembangan](#bekerja-dalam-mode-pengembangan) yang memang memperbarui saat Anda mengedit untuk menampilkan pratinjau langsung perubahan kode Anda.
+
+<ReadMore>Baca lebih lanjut tentang [CLI Astro](/id/reference/cli-reference/) dan perintah terminal yang akan Anda gunakan saat Anda membangun dengan Astro.</ReadMore>
+
+
+:::tip
+Anda mungkin ingin [deploy situs baru Anda segera](/id/guides/deploy/), sebelum Anda mulai menambahkan atau mengubah terlalu banyak kode. Ini sangat membantu untuk mendapatkan versi minimal dan berfungsi dari situs Anda yang diterbitkan dan dapat menghemat waktu dan upaya ekstra untuk memecahkan masalah deployment Anda nanti.
+:::
+
+## Langkah Selanjutnya
+
+Berhasil! Anda sekarang siap untuk mulai membangun dengan Astro! 🥳
+
+Berikut adalah beberapa hal yang kami rekomendasikan untuk dieksplorasi selanjutnya. Anda dapat membacanya dalam urutan apa pun. Anda bahkan dapat meninggalkan dokumentasi kami sebentar dan mulai bermain di basis kode proyek Astro baru Anda, kembali ke sini kapan pun Anda menemui masalah atau memiliki pertanyaan.
+
+
+### Konfigurasi lingkungan pengembangan Anda
+
+Jelajahi panduan di bawah ini untuk menyesuaikan pengalaman pengembangan Anda.
+
+<CardGrid>
+  <LinkCard
+    title="Pengaturan Editor"
+    description="Sesuaikan editor kode Anda untuk meningkatkan pengalaman pengembang Astro dan membuka fitur baru."
+    href="/id/editor-setup/"
+  />
+  <LinkCard
+    title="Dev Toolbar"
+    description="Jelajahi fitur-fitur bermanfaat dari dev toolbar."
+    href="/id/guides/dev-toolbar/"
+  />
+  <LinkCard
+    title="Konfigurasi TypeScript"
+    description="Konfigurasi opsi untuk pemeriksaan tipe, IntelliSense, dan banyak lagi."
+    href="/id/guides/typescript/"
+  />
+</CardGrid>
+
+
+### Jelajahi Fitur Astro
+
+<CardGrid>
+  <LinkCard
+    title="Pahami basis kode Anda"
+    description="Pelajari tentang struktur file Astro di panduan Struktur Proyek kami."
+    href="/id/basics/project-structure/"
+  />
+  <LinkCard
+    title="Buat koleksi konten"
+    description="Tambahkan konten ke situs baru Anda dengan validasi frontmatter dan keamanan tipe otomatis."
+    href="/id/guides/content-collections/"
+  />
+    <LinkCard
+    title="Tambahkan transisi tampilan"
+    description="Buat transisi dan animasi halaman yang mulus."
+    href="/id/guides/view-transitions/"
+  />
+  <LinkCard
+    title="Pelajari tentang Islands"
+    description="Baca tentang arsitektur island Astro."
+    href="/id/concepts/islands/"
+  />
+</CardGrid>
+
+
+### Ikuti tutorial pengantar
+
+Bangun blog Astro yang berfungsi penuh mulai dari satu halaman kosong di [tutorial pengantar](/id/tutorial/0-introduction/) kami.
+
+Ini adalah cara yang bagus untuk melihat bagaimana Astro bekerja dan memandu Anda melalui dasar-dasar halaman, tata letak, komponen, perutean, islands, dan banyak lagi. Ini juga mencakup unit opsional yang ramah pemula bagi mereka yang baru mengenal konsep pengembangan web secara umum, yang akan memandu Anda melalui penginstalan aplikasi yang diperlukan di komputer Anda, membuat akun GitHub, dan mendeploy situs Anda.
