@@ -2,9 +2,6 @@
 title: Astro 업그레이드
 description: Astro를 업그레이드하는 방법
 i18nReady: true
-banner:
-  content: |
-    Astro v5가 출시되었습니다! <a href="/ko/guides/upgrade-to/v5/">사이트를 업그레이드하는 방법을 알아보세요.</a>
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
 import Version from '~/components/Version.astro';
@@ -105,6 +102,7 @@ Astro 주요 문서 페이지는 항상 **Astro의 최신 릴리스 버전에 �
 
 아래의 업그레이드 가이드에서 변경 사항에 대한 설명과 새 버전과 이전 버전을 비교한 내용을 확인하세요. 업그레이드 가이드에는 주요 변경 사항, 더 이상 사용되지 않는 기능, 기능 제거 및 대체, 업데이트된 사용법 안내 등 사용자 코드 변경이 필요할 수 있는 모든 내용이 포함되어 있습니다. Astro의 각 변경 사항에는 프로젝트 코드를 성공적으로 업데이트하는 데 도움이 되는 "무엇을 해야 하나요?" 섹션이 포함되어 있습니다.
 
+- [v6로 업그레이드](/ko/guides/upgrade-to/v6/)
 - [v5로 업그레이드](/ko/guides/upgrade-to/v5/)
 - [v4로 업그레이드](/ko/guides/upgrade-to/v4/)
 - [v3로 업그레이드](/ko/guides/upgrade-to/v3/)
@@ -115,9 +113,10 @@ Astro 주요 문서 페이지는 항상 **Astro의 최신 릴리스 버전에 �
 
 이전 버전의 Astro에 대한 문서는 유지 관리되지 않지만, 정적 스냅샷으로 제공됩니다. 프로젝트를 업그레이드할 수 없지만 가이드 및 참조가 필요한 경우 이러한 버전의 문서를 사용하세요.
 
+- [유지 관리되지 않는 v5.18.0 스냅샷](https://v5.docs.astro.build/en/getting-started/)
 - [유지 관리되지 않는 v4.16.17 스냅샷](https://v4.docs.astro.build/en/getting-started/)
-- [유지 관리되지 않는 v3.6.3 스냅샷](https://docs-git-v3-docs-unmaintained-astrodotbuild.vercel.app/)
-- [유지 관리되지 않는 v2.10.15 스냅샷](https://deploy-preview-4405--astro-docs-2.netlify.app/en/getting-started/)
+- [유지 관리되지 않는 v3.6.3 스냅샷](https://web.archive.org/web/20231203051122/https://docs.astro.build/ko/getting-started/)
+- [유지 관리되지 않는 v2.10.15 스냅샷](https://web.archive.org/web/20230822134745/https://docs.astro.build/en/getting-started)
 
 ## 의미론적 버전 관리
 
@@ -194,7 +193,7 @@ Astro가 "패치" 버전을 발행하면 마지막 숫자가 증가합니다. (�
 다음 규칙은 Astro가 Node.js 버전에 대한 지원을 중단, 삭제 또는 추가할 수 있는 시기를 정의합니다.
 
 - 홀수 버전의 Node.js는 다음 짝수 버전의 Node.js가 게시될 때 더 이상 사용되지 않거나 삭제될 수 있습니다. 이 변경 사항은 Astro Core 팀이 결정한 합리적인 연장 지원 기간 후 Astro의 **마이너** 릴리스에서 발생할 수 있습니다.
-- Node.js의 최소 **_Maintenance_ LTS** (동일한 주버전 범위와 함께, 예를 들어 `v18.14.*`에서 `v18.20.*`로) 버전 업그레이드는 Astro의 **부** 릴리스에서 발생할 수 있습니다.
+- Node.js의 최소 **_Maintenance_ LTS** (동일한 주버전 범위와 함께, 예를 들어 `22.14.*`에서 `22.20.*`로) 버전 업그레이드는 Astro의 **부** 릴리스에서 발생할 수 있습니다.
 - 최소 **_Maintenance_ LTS** 버전 (동일한 메이저 범위 내, 예를 들어 `v18.14.*`에서 `v18.20.*`)의 Node.js 업그레이드는 Astro의 **마이너** 릴리스에서 발생할 수 있습니다.
   - 보안 예외: **Astro에 영향을 미치는** Node.js의 보안 결함이 발견되어 수정된 경우, Core 팀은 **패치** 릴리스에서 최소 **_Maintenance_ LTS** 버전을 높일 수 있습니다.
 - 마이너 또는 메이저 버전의 Node.js 업그레이드 (Maintenance LTS **제외**)는 Astro의 메이저 버전에서만 발생합니다.

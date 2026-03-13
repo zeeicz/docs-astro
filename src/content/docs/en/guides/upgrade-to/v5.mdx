@@ -603,13 +603,12 @@ const { showAlert } = Astro.props;
 }
 ```
 
-<ReadMore>Read more about [using `script` tags in Astro](/en/guides/client-side-scripts/#using-script-in-astro).</ReadMore>
+<ReadMore>Read more about [using `script` tags in Astro](/en/guides/client-side-scripts/).</ReadMore>
 
 ## Breaking Changes
 
 The following changes are considered breaking changes in Astro v5.0. Breaking changes may or may not provide temporary backwards compatibility. If you were using these features, you may have to update your code as recommended in each entry.
 
-{/* If you need to refer to the documentation for a v4.x project, you can browse this [(unmaintained) snapshot of the docs from before v5.0 was released](https://docs-git-v3-docs-unmaintained-astrodotbuild.vercel.app/). */}
 
 ### Renamed: `<ViewTransitions />` component
 
@@ -723,7 +722,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	if (payload) {
 		const { actionName, actionResult } = payload.json();
 		setActionResult(actionName, actionResult);
-		context.cookies.delete('ACTION_PAYLOAD');
+		context.cookies.delete('ACTION_PAYLOAD', { path: '/' });
 		return next();
 	}
 
@@ -735,6 +734,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 		context.cookies.set('ACTION_PAYLOAD', {
 			actionName: action.name,
 			actionResult: serializeActionResult(actionResult),
+		}, {
+			path: '/',
+			httpOnly: true,
+			sameSite: 'lax',
+			maxAge: 60
 		});
 
 		if (actionResult.error) {
@@ -1107,8 +1111,6 @@ function useRoute(route: IntegrationRouteData) {
 }
 ```
 
-<ReadMore>See the [API reference for `IntegrationRouteData`](/en/reference/integrations-reference/#integrationroutedata-type-reference).</ReadMore>
-
 ### Changed: `distURL` is now an array (Integrations API)
 
 <SourcePR number="11864" title="send `IntegrationRouteData` to integrations"/>
@@ -1134,7 +1136,7 @@ if (route.distURL) {
 }
 ```
 
-<ReadMore>See the [API reference for `IntegrationRouteData`](/en/reference/integrations-reference/#integrationroutedata-type-reference).</ReadMore>
+<ReadMore>See the [API reference for `distURL`](/en/reference/integrations-reference/#routedatadisturl).</ReadMore>
 
 ### Changed: Arguments passed to `app.render()` (Adapter API)
 
@@ -1153,7 +1155,7 @@ const response = await app.render(request, routeData, locals);
 const response = await app.render(request, {routeData, locals});
 ```
 
-<ReadMore>See the [Adapter API reference for `renderOptions`](/en/reference/adapter-reference/#renderoptions).</ReadMore>
+<ReadMore>See the [Adapter API reference for `renderOptions`](/en/reference/modules/astro-app/#renderoptions).</ReadMore>
 
 ### Changed: Properties on `supportedAstroFeatures` (Adapter API)
 

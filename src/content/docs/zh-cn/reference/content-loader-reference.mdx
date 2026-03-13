@@ -26,11 +26,11 @@ Astro 提供两种内置加载器以帮助你获取你的集合。两者都提�
 <Since v="5.0.0" />
 </p>
 
-`glob()` 加载器从文件系统中任何位置的文件目录创建条目。支持的文件类型包括 Markdown、MDX、Markdoc、JSON 和 YAML 文件。
+`glob()` 加载器从文件系统中任何位置的文件目录创建条目。支持的文件类型包括 Markdown、MDX、Markdoc、JSON、YAML 和 TOML 文件。
 
-该加载器接受具有以下属性的对象：`pattern`、`base`（可选）以及 `generateId`（可选）。
+该加载器接受具有以下属性的对象：`pattern`、`base`（可选）、`generateId`（可选）和 `retainBody`（可选）。
 
-```ts title="src/content.config.ts" {2,6,11,17-21}
+```ts title="src/content.config.ts" {2,6,11,17-21, 27-31}
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 
@@ -42,6 +42,16 @@ const pages = defineCollection({
 const blog = defineCollection({
   /* 检索你 blog 目录中的所有 Markdown 和 MDX 文件。 */
   loader: glob({ pattern: "**/*.(md|mdx)", base: "./src/data/blog" }),
+  schema: /* ... */
+});
+const notes = defineCollection({
+  /* 在你的笔记目录中检索所有 Markdown 文件并防止
+   * 内容文件的原始正文被存储到数据存储中。 */
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/data/notes',
+    retainBody: false
+  }),
   schema: /* ... */
 });
 const authors = defineCollection({
@@ -91,6 +101,25 @@ const authors = defineCollection({
 
 默认情况下，它使用 [`github-slugger`](https://github.com/Flet/github-slugger) 生成遵循 [烤串命名法](https://developer.mozilla.org/zh-CN/docs/Glossary/Kebab_case) 的 slug。
 
+#### `retainBody`
+
+<p>
+
+**类型：** `boolean`<br />
+**默认值：** `true`
+<Since v="5.17.0" />
+</p>
+
+是否在数据存储中保存内容文件的原始正文。
+
+当 `retainBody` 设置为 `false` 时，[`entry.body`](/zh-cn/reference/modules/astro-content/#body) 将被设置为 `undefined`，而不是包含原始文件内容。
+
+将此属性设置为 `false` 可以显著减少部署的数据存储大小，并有助于避免在拥有非常大集合的网站上触及大小限制。。
+
+对于 Markdown 文件，渲染后的正文仍可在 [`entry.rendered.html` 属性](/zh-cn/reference/content-loader-reference/#rendered) 中获取，且 [`entry.filePath` 属性](/zh-cn/reference/content-loader-reference/#filepath) 仍将指向原始文件。
+
+对于 MDX 集合，这将大幅减小集合的大小，因为存储中将不再保留任何正文。
+
 ### `file()` 加载器
 
 <p>
@@ -99,7 +128,7 @@ const authors = defineCollection({
 <Since v="5.0.0" />
 </p>
 
-`file()` 加载器从单个文件创建条目，该文件包含具有唯一 `id` 字段的对象数组或是一个以 ID 作为键、条目作为值的对象。它支持 JSON 或 YAML，你可以为默认情况下无法解析的数据文件提供一个自定义 `parser`。
+`file()` 加载器从单个文件创建条目，该文件包含具有唯一 `id` 字段的对象数组或是一个以 ID 作为键、条目作为值的对象。它支持 JSON、YAML 或者 TOML 文件，你可以为默认情况下无法解析的数据文件提供一个自定义 `parser`。
 
 该加载器接受一个 `fileName` 属性和一个可选对象作为第二个参数：
 
@@ -143,7 +172,7 @@ const products = defineCollection({
 
 <p>
 
-**类型：** `(text: string) => Record<string, Record<string, unknown>> | Array<Record<string, unknown>>`
+**类型：** `(text: string) => Record<string, Record<string, unknown>> | Array<Record<string, unknown>>  | Promise<Record<string, Record<string, unknown>> | Array<Record<string, unknown>>>`
 </p>
 
 回调函数，用于从文件内容创建一个集合。当你需要处理默认情况下不支持的文件（例如 `.csv`）或使用 [嵌套的 `.json` 文档](/zh-cn/guides/content-collections/#嵌套的-json-文件) 时，请使用它。
@@ -182,7 +211,7 @@ const countries = defineCollection({
 
 ```ts title=loader.ts
 import type { Loader, LoaderContext } from 'astro/loaders';
-import { z } from 'astro:content';
+import { z } from 'astro/zod';
 import { loadFeedData } from "./feed.js";
 
 // 定义加载器需要的任何选项
@@ -208,9 +237,10 @@ export function myLoader(options: { url: string, apiKey: string }): Loader {
 
 然后就可以在定义集合时设置这些配置选项：
 
-```ts title="src/content.config.ts"  {2,5-8}  
-import { defineCollection, z } from 'astro:content';  
-import myLoader from '../../loader.ts';  
+```ts title="src/content.config.ts"  {3,6-9}  
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import myLoader from '../../loader.ts';
 
 const blog = defineCollection({  
   loader: myLoader({
@@ -378,7 +408,7 @@ export function myLoader(settings): Loader {
       store.clear();
 
       for (const entry of entries) {
-        store.set(entry.id, {
+        store.set({
           id: entry.id,
           data: entry,
           // 假设每个条目都包含一个带有 markdown 内容的 'content' 字段

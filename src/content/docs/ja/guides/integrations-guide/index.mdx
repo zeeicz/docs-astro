@@ -1,34 +1,41 @@
 ---
-title: インテグレーションを追加する
+title: インテグレーションの追加
+description: Astroプロジェクトにインテグレーションを追加する方法を学びます。
+sidebar:
+  label: インテグレーションの概要
 i18nReady: true
 ---
 
 import IntegrationsNav from '~/components/IntegrationsNav.astro';
-import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-import { Steps } from '@astrojs/starlight/components'
+import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import { Steps } from '@astrojs/starlight/components';
 
-**Astroインテグレーション**により、わずか数行のコードでプロジェクトに新しい機能や挙動を追加できます。自分でカスタムインテグレーションを書いたり、公式のインテグレーションを利用したり、コミュニティによって作られたインテグレーションを利用できます。
 
-インテグレーションにより…
+**Astroのインテグレーション**により、わずか数行のコードでプロジェクトに新たな機能や動作を追加できます。公式のインテグレーションだけでなく、[コミュニティが作成したもの](#その他のインテグレーションを探す)を使用したり、[独自にカスタムインテグレーションを作成する](#独自のインテグレーションを作成する)ことも可能です。
 
-- React、Vue、Svelte、Solidなどの一般的なUIフレームワークを使用できます。
-- TailwindやPartytownのようなツールを数行のコードで組み込めます。
-- サイトマップの自動生成など、プロジェクトに新機能を追加できます。
-- ビルドプロセスや開発サーバーなどにフックするカスタムコードを書けます。
+インテグレーションにより以下のようなことができます。
+
+- [レンダラー](/ja/guides/framework-components/)により、React、Vue、Svelte、Solidなど人気のUIフレームワークを使用する。
+- [SSRアダプター](/ja/guides/on-demand-rendering/)により、オンデマンドレンダリングを有効にする。
+- MDXやPartytownなどのツールをわずか数行のコードで組み込む。
+- サイトマップの自動生成など、プロジェクトに新しい機能を追加する。
+- ビルドプロセスや開発サーバーなどにフックするカスタムコードを記述する。
 
 :::tip[インテグレーションディレクトリ]
-[インテグレーションディレクトリ](https://astro.build/integrations/)で、何百もの公式・コミュニティ製のインテグレーションを検索・閲覧できます。認証、アナリティクス、パフォーマンス、SEO、アクセシビリティ、UI、開発者ツールなど、Astroプロジェクトに追加すべきパッケージを見つけてください。
+[インテグレーションディレクトリ](https://astro.build/integrations/)では、数百もの公式・コミュニティインテグレーションを閲覧・検索できます。認証、アナリティクス、パフォーマンス、SEO、アクセシビリティ、UI、開発者ツールなど、あなたのAstroプロジェクトに追加したいパッケージを見つけましょう。
 :::
 
 ## 公式インテグレーション
+
+以下のインテグレーションはAstroによってメンテナンスされています。
 
 <IntegrationsNav />
 
 ## インテグレーションの自動セットアップ
 
-Astroには、公式インテグレーションのセットアップを自動化するための`astro add`コマンドが含まれています。一部のコミュニティプラグインもこのコマンドを使用して追加できます。`astro add`がサポートされているかどうか、あるいは[手動でインストール](#手動インストール)する必要があるかどうかは、各インテグレーションのドキュメントを確認してください。
+Astroには、公式インテグレーションのセットアップを自動化する`astro add`コマンドがあります。いくつかのコミュニティプラグインもこのコマンドで追加できます。`astro add`がサポートされているかどうかは、各インテグレーションのドキュメントを確認してください。サポートされていない場合は[手動でインストール](#手動インストール)する必要があります。
 
-好みのパッケージマネージャーを使用して`astro add`コマンドを実行すると、インテグレーション用の自動ウィザードが設定ファイルの更新と必要な依存関係のインストールを行います。
+お好みのパッケージマネージャーで`astro add`コマンドを実行すると、自動インテグレーションウィザードが設定ファイルを更新し、必要な依存関係をインストールします。
 
 <PackageManagerTabs>
   <Fragment slot="npm">
@@ -48,38 +55,57 @@ Astroには、公式インテグレーションのセットアップを自動化
   </Fragment>
 </PackageManagerTabs>
 
-複数のインテグレーションを同時に追加することも可能です。
+同時に複数のインテグレーションを追加することも可能です！
 
 <PackageManagerTabs>
   <Fragment slot="npm">
   ```shell
-  npx astro add react tailwind partytown
+  npx astro add react sitemap partytown
   ```
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm astro add react tailwind partytown
+  pnpm astro add react sitemap partytown
   ```
   </Fragment>
   <Fragment slot="yarn">
   ```shell
-  yarn astro add react tailwind partytown
+  yarn astro add react sitemap partytown
   ```
   </Fragment>
 </PackageManagerTabs>
 
-:::note[インテグレーションの依存関係に対処する]
-インテグレーションの追加後に`Cannot find package '[package-name]'`のような警告が表示された場合、パッケージマネージャーが[peer dependencies](https://nodejs.org/en/blog/npm/peer-dependencies/)をインストールできていないかもしれません。こうした足りないパッケージをインストールするには、`npm install [package-name]`を実行してください。
+:::note[インテグレーションの依存関係の扱い]
+インテグレーションの追加後に`Cannot find package '[package-name]'`のような警告が表示された場合、パッケージマネージャーが[peer dependencies](https://nodejs.org/en/blog/npm/peer-dependencies/)をインストールしていない可能性があります。不足しているパッケージをインストールするには、以下のコマンドを実行してください。
+
+<PackageManagerTabs>
+  <Fragment slot="npm">
+  ```shell
+  npm install [package-name]
+  ```
+  </Fragment>
+  <Fragment slot="pnpm">
+  ```shell
+  pnpm add [package-name]
+  ```
+  </Fragment>
+  <Fragment slot="yarn">
+  ```shell
+  yarn add [package-name]
+  ```
+  </Fragment>
+</PackageManagerTabs>
 :::
 
 ### 手動インストール
 
-Astroインテグレーションは、常に`astro.config.mjs`ファイルの`integrations`プロパティを通じて追加します。
+Astroのインテグレーションは、常に`astro.config.mjs`ファイルの`integrations`プロパティを通じて追加します。
 
-Astroプロジェクトにインテグレーションをインポートするには、3つの主要な方法があります。
-1. [npmパッケージのインテグレーションをインストールする](#npmパッケージのインストール)。
+Astroプロジェクトにインテグレーションをインポートするには、主に3つの方法があります。
+
+1. [npmパッケージのインテグレーションをインストール](#npmパッケージのインストール)する。
 2. プロジェクト内のローカルファイルから独自のインテグレーションをインポートする。
-3. インテグレーションを設定ファイルに直接インラインで記述する。
+3. 設定ファイルに直接インラインで記述する。
 
     ```js
     // astro.config.mjs
@@ -99,16 +125,16 @@ Astroプロジェクトにインテグレーションをインポートするに
     });
     ```
 
-[インテグレーションAPI](/ja/reference/integrations-reference/)のリファレンスで、インテグレーションを書くための様々な方法について参照してください。
+インテグレーションの記述方法については、[インテグレーションAPI](/ja/reference/integrations-reference/)リファレンスを確認してください。
 
-#### npmパッケージのインストール
+#### NPMパッケージのインストール
 
-パッケージマネージャーを使用してnpmパッケージのインテグレーションをインストールし、`astro.config.mjs`を手動で更新します。
+パッケージマネージャーを使用してNPMパッケージのインテグレーションをインストールし、`astro.config.mjs`を手動で更新します。
 
-たとえば、`@astrojs/sitemap`インテグレーションをインストールするには以下のようにします。
+たとえば、`@astrojs/sitemap`インテグレーションをインストールするには次のようにします。
 
 <Steps>
-1. 好みのパッケージマネージャーを使用してプロジェクトの依存関係にインテグレーションをインストールします。
+1. お好みのパッケージマネージャーを使用して、プロジェクトの依存関係にインテグレーションをインストールします。
 
    <PackageManagerTabs>
      <Fragment slot="npm">
@@ -128,7 +154,7 @@ Astroプロジェクトにインテグレーションをインポートするに
      </Fragment>
    </PackageManagerTabs>
 
-2. `astro.config.mjs`にインテグレーションをインポートし、設定オプションとともに`integrations[]`配列に追加します。
+2. `astro.config.mjs`ファイルにインテグレーションをインポートし、その他の設定オプションとともに`integrations[]`配列に追加します。
 
     ```js title="astro.config.mjs" ins={2} ins="sitemap()"
     import { defineConfig } from 'astro/config';
@@ -141,53 +167,53 @@ Astroプロジェクトにインテグレーションをインポートするに
     });
     ```
 
-    インテグレーションごとに設定方法は異なる可能性があるため、各インテグレーションのドキュメントを読み、使用するインテグレーションの設定オプションを必要に応じて`astro.config.mjs`で適用してください。
+    インテグレーションによって設定項目が異なる場合があります。各インテグレーションのドキュメントを確認し、必要な設定オプションを`astro.config.mjs`で適用してください。
 </Steps>
 
 ### カスタムオプション
 
-インテグレーションは、ほとんどの場合は実際のインテグレーションオブジェクトを返すファクトリ関数として定義されます。これにより、ファクトリ関数に引数やオプションを渡して、プロジェクト用にインテグレーションをカスタマイズできます。
+インテグレーションは、ほぼ常にファクトリ関数として作成され、実際のインテグレーションオブジェクトを返します。これにより、ファクトリ関数に引数やオプションを渡して、プロジェクトに合わせたカスタマイズが可能です。
 
 ```js
 integrations: [
-  // 関数の引数によりインテグレーションをカスタマイズする例
+  // 例: 関数の引数でインテグレーションをカスタマイズ
   sitemap({filter: true})
 ]
 ```
 
 ### インテグレーションの切り替え
 
-Falsyなインテグレーションは無視されるため、`undefined`や真偽値が設定されてしまうことを気にすることなく、インテグレーションのオンとオフを切り替えられます。
+falsyなインテグレーションは無視されるため、`undefined`や真偽値を気にすることなく、インテグレーションのオン・オフを切り替えられます。
 
 ```js
 integrations: [
-  // サイトマップのビルドをWindowsではスキップする例
+  // 例: Windowsではサイトマップのビルドをスキップ
   process.platform !== 'win32' && sitemap()
 ]
 ```
 
-## インテグレーションをアップグレードする
+## インテグレーションの更新
 
-公式インテグレーションを一括でアップグレードするには、`@astrojs/upgrade`コマンドを実行します。これにより、Astroとすべての公式インテグレーションが最新バージョンにアップグレードされます。
+すべての公式インテグレーションを一度に更新するには、`@astrojs/upgrade`コマンドを実行します。これにより、Astroとすべての公式インテグレーションが最新バージョンに更新されます。
 
 ### 自動アップグレード
 
 <PackageManagerTabs>
   <Fragment slot="npm">
   ```shell
-  # Astroと公式インテグレーションを一括で最新にアップグレードする
+  # Astroと公式インテグレーションを最新バージョンにアップグレード
   npx @astrojs/upgrade
   ```
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  # Astroと公式インテグレーションを一括で最新にアップグレードする
+  # Astroと公式インテグレーションを最新バージョンにアップグレード
   pnpm dlx @astrojs/upgrade
   ```
   </Fragment>
   <Fragment slot="yarn">
   ```shell
-  # Astroと公式インテグレーションを一括で最新にアップグレードする
+  # Astroと公式インテグレーションを最新バージョンにアップグレード
   yarn dlx @astrojs/upgrade
   ```
   </Fragment>
@@ -195,71 +221,73 @@ integrations: [
 
 ### 手動アップグレード
 
-1つ以上のインテグレーションを手動アップグレードするには、パッケージマネージャーの適切なコマンドを使用します。
+1つ以上のインテグレーションを手動でアップグレードするには、パッケージマネージャーに応じたコマンドを使用します。
 
 <PackageManagerTabs>
   <Fragment slot="npm">
   ```shell
-  # ReactとTailwindのインテグレーションをアップグレードする例
-  npm install @astrojs/react@latest @astrojs/tailwind@latest
+  # 例: ReactとPartytownのインテグレーションをアップグレード
+  npm install @astrojs/react@latest @astrojs/partytown@latest
   ```
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  # ReactとTailwindのインテグレーションをアップグレードする例
-  pnpm add @astrojs/react@latest @astrojs/tailwind@latest
+  # 例: ReactとPartytownのインテグレーションをアップグレード
+  pnpm add @astrojs/react@latest @astrojs/partytown@latest
   ```
   </Fragment>
   <Fragment slot="yarn">
   ```shell
-  # ReactとTailwindのインテグレーションをアップグレードする例
-  yarn add @astrojs/react@latest @astrojs/tailwind@latest
+  # 例: ReactとPartytownのインテグレーションをアップグレード
+  yarn add @astrojs/react@latest @astrojs/partytown@latest
   ```
   </Fragment>
 </PackageManagerTabs>
 
-## インテグレーションを削除する
+## インテグレーションの削除
 
-インテグレーションを削除するには、まずプロジェクトからインテグレーションをアンインストールします。
+<Steps>
+1. インテグレーションを削除するには、まずプロジェクトからインテグレーションをアンインストールします。
 
-<PackageManagerTabs>
-  <Fragment slot="npm">
-  ```shell
-  npm uninstall @astrojs/react
-  ```
-  </Fragment>
-  <Fragment slot="pnpm">
-  ```shell
-  pnpm remove @astrojs/react
-  ```
-  </Fragment>
-  <Fragment slot="yarn">
-  ```shell
-  yarn remove @astrojs/react
-  ```
-  </Fragment>
-</PackageManagerTabs>
+    <PackageManagerTabs>
+      <Fragment slot="npm">
+      ```shell
+      npm uninstall @astrojs/react
+      ```
+      </Fragment>
+      <Fragment slot="pnpm">
+      ```shell
+      pnpm remove @astrojs/react
+      ```
+      </Fragment>
+      <Fragment slot="yarn">
+      ```shell
+      yarn remove @astrojs/react
+      ```
+      </Fragment>
+    </PackageManagerTabs>
 
-続いて、`astro.config.*`ファイルからインテグレーションを削除します。
+2. 次に、`astro.config.*`ファイルからインテグレーションを削除します。
 
-```js title="astro.config.mjs" del={3,7}
-import { defineConfig } from 'astro/config';
+    ```js title="astro.config.mjs" del={3,7}
+    import { defineConfig } from 'astro/config';
 
-import react from '@astrojs/react';
+    import react from '@astrojs/react';
 
-export default defineConfig({
-  integrations: [
-    react()
-  ]
-});
-```
+    export default defineConfig({
+      integrations: [
+        react()
+      ]
+    });
+    ```
+</Steps>
 
-## 他のインテグレーションを見つける
+## その他のインテグレーションを探す
 
-[Astroインテグレーションのリスト](https://astro.build/integrations/)には、コミュニティによって開発された多くのインテグレーションが掲載されています。詳細な使い方や設定方法については、上のリンクをたどってみてください。
+コミュニティによって開発された多くのインテグレーションを[Astroインテグレーションディレクトリ](https://astro.build/integrations/)で見つけることができます。詳しい使い方や設定方法については、各リンク先を参照してください。
 
 ## 独自のインテグレーションを作成する
 
-AstroのインテグレーションAPIはRollupとViteに影響を受けており、RollupやViteのプラグインを書いたことがある人なら誰でも親しみやすいように設計されています。
+AstroのインテグレーションAPIはRollupやViteに影響を受けており、RollupやViteのプラグインを書いたことがある人にとって馴染みやすい設計になっています。
 
-[インテグレーションAPI](/ja/reference/integrations-reference/)リファレンスを確認し、インテグレーションができること、自分で作成する方法について学んでみてください。
+インテグレーションでできることやその作成方法については、[インテグレーションAPI](/ja/reference/integrations-reference/)リファレンスを確認してください。

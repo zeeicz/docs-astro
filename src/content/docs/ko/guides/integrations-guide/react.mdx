@@ -8,8 +8,8 @@ githubIntegrationURL: 'https://github.com/withastro/astro/tree/main/packages/int
 category: renderer
 i18nReady: true
 ---
-
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import Since from '~/components/Since.astro';
 
 이 **[Astro 통합][astro-integration]을** 통해 [React](https://react.dev/) 컴포넌트에 대한 렌더링 및 클라이언트 측 하이드레이션이 가능해졌습니다.
 
@@ -115,6 +115,79 @@ Astro에서 첫 번째 React 컴포넌트를 사용하려면 [UI 프레임워크
 * 💧 클라이언트 측 하이드레이션 옵션
 * 🤝 프레임워크를 함께 혼합하고 중첩할 수 있는 기회
 
+## `useActionState()`를 사용하여 액션 통합하기
+
+`@astrojs/react` 통합은 [Astro 액션][astro-actions]과 함께 사용할 수 있는 두 가지 함수인 `withState()`와 `getActionState()`를 제공합니다.
+
+이 함수들은 [React의 useActionState() 훅](https://ko.react.dev/reference/react/useActionState)과 함께 사용되어, 양식을 제출하여 액션을 트리거할 때 클라이언트 측 상태를 읽고 업데이트합니다.
+
+### `withState()`
+
+<p>
+
+**타입:** `(action: FormFn<T>) => (state: T, formData: FormData) => FormFn<T>`<br />
+<Since v="4.4.0" pkg="@astrojs/react" />
+</p>
+
+`withState()`와 실행하려는 액션을 React의 `useActionState()` 훅에 양식 액션 함수로 전달할 수 있습니다. 다음은 카운터를 증가시키는 `like` 액션과 함께 초기 상태인 좋아요 `0`개를 전달하는 예시입니다.
+
+```jsx title="Like.tsx" ins={2,7} "useActionState"
+import { actions } from 'astro:actions';
+import { withState } from '@astrojs/react/actions';
+import { useActionState } from "react";
+
+export function Like({ postId }: { postId: string }) {
+  const [state, action, pending] = useActionState(
+    withState(actions.like),
+    { data: 0, error: undefined }, // 좋아요 수와 오류의 초깃값
+  );
+
+  return (
+    <form action={action}>
+      <input type="hidden" name="postId" value={postId} />
+      <button disabled={pending}>{state.data} ❤️</button>
+    </form>
+  );
+}
+```
+
+`withState()` 함수는 액션의 타입을 React의 기대값과 일치시킵니다. 이를 통해 점진적 개선에 사용되는 메타데이터를 보존하여, 사용자의 기기에서 JavaScript가 비활성화된 경우에도 작동할 수 있도록 합니다.
+
+### `getActionState()`
+
+<p>
+
+**타입:** `(context: ActionAPIContext) => Promise<T>`<br />
+<Since v="4.4.0" pkg="@astrojs/react" />
+</p>
+
+액션의 `handler`에서 `getActionState()`를 사용하여 서버에서 `useActionState()`로 저장한 상태에 접근할 수 있습니다. 이 함수는 [Astro API 컨텍스트](/ko/reference/api-reference/#컨텍스트-객체)를 인수로 받으며, 선택적으로 결과에 타입을 적용할 수 있습니다.
+
+다음은 카운터에서 숫자 타입의 현재 좋아요 수를 가져와 이를 증가시키는 `like` 액션을 생성하는 예시입니다.
+
+```ts title="actions.ts" ins={3,11}
+import { defineAction, type SafeResult } from 'astro:actions';
+import { z } from 'astro/zod';
+import { getActionState } from '@astrojs/react/actions';
+
+export const server = {
+  like: defineAction({
+    input: z.object({
+      postId: z.string(),
+    }),
+    handler: async ({ postId }, ctx) => {
+      const { data: currentLikes = 0, error } = await getActionState<SafeResult<any, number>>(ctx);
+      
+      // 오류 처리
+      if (error) throw error;
+
+      // 데이터베이스 업데이트
+      return currentLikes + 1;
+    },
+  })
+};
+```
+
 ## 옵션
 
 ### 여러 JSX 프레임워크 결합
@@ -202,11 +275,13 @@ export default defineConfig({
   integrations: [
     react({
       experimentalDisableStreaming: true,
-    }),
-  ],
+    })
+  ]
 });
 ```
 
 [astro-integration]: /ko/guides/integrations-guide/
 
 [astro-ui-frameworks]: /ko/guides/framework-components/#프레임워크-컴포넌트-사용
+
+[astro-actions]: /ko/guides/actions/

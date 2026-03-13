@@ -101,9 +101,12 @@ To configure this adapter, pass an object to the `vercel()` function call in `as
 
 ### `webAnalytics`
 
+<p>
+
 **Type:** `VercelWebAnalyticsConfig`<br/>
 **Available for:** Serverless, Static<br/>
 <Since v="3.8.0" pkg="@astrojs/vercel" />
+</p>
 
 With `@vercel/analytics@1.3.x` or earlier, you can set `webAnalytics: { enabled: true }` in your Astro config to inject Vercel’s tracking scripts into all of your pages.
 
@@ -125,9 +128,12 @@ export default defineConfig({
 
 ### `imagesConfig`
 
+<p>
+
 **Type:** `VercelImageConfig`<br/>
-**Available for:** Serverless, Static
+**Available for:** Serverless, Static<br />
 <Since v="3.3.0" pkg="@astrojs/vercel" />
+</p>
 
 Configuration options for [Vercel's Image Optimization API](https://vercel.com/docs/concepts/image-optimization). See [Vercel's image configuration documentation](https://vercel.com/docs/build-output-api/v3/configuration#images) for a complete list of supported parameters.
 
@@ -150,9 +156,12 @@ export default defineConfig({
 
 ### `imageService`
 
+<p>
+
 **Type:** `boolean`<br/>
-**Available for:** Serverless, Static
+**Available for:** Serverless, Static<br />
 <Since v="3.3.0" pkg="@astrojs/vercel" />
+</p>
 
 When enabled, an [Image Service](/en/reference/image-service-reference/) powered by the Vercel Image Optimization API will be automatically configured and used in production. In development, the image service specified by [`devImageService`](#devimageservice) will be used instead.
 
@@ -191,10 +200,13 @@ import astroLogo from '../assets/logo.png';
 
 ### `devImageService`
 
+<p>
+
 **Type:** `'sharp' | string`<br/>
-**Available for:** Serverless, Static
+**Default:** `sharp`<br />
+**Available for:** Serverless, Static<br />
 <Since v="3.8.0" pkg="@astrojs/vercel" />
-**Default**: `sharp`
+</p>
 
 Allows you to configure which image service to use in development when [imageService](#imageservice) is enabled. This can be useful if you cannot install Sharp's dependencies on your development machine, but using another image service like Squoosh would allow you to preview images in your dev environment. Build is unaffected and will always use Vercel's Image Optimization.
 
@@ -215,10 +227,13 @@ export default defineConfig({
 
 ### `isr`
 
-**Type:** <code>boolean |   VercelISRConfig</code><br/>
-**Available for:** Serverless
+<p>
+
+**Type:** `boolean | VercelISRConfig`<br/>
+**Default:** `false`<br />
+**Available for:** Serverless<br />
 <Since v="7.2.0" pkg="@astrojs/vercel" />
-**Default**: `false`
+</p>
 
 Allows your project to be deployed as an [ISR (Incremental Static Regeneration)](https://vercel.com/docs/incremental-static-regeneration) function, which caches your on-demand rendered pages in the same way as prerendered pages after first request. 
 
@@ -244,9 +259,11 @@ By default, an ISR function caches for the duration of your deployment. You can 
 
 ##### Time-based invalidation
 
-You can change the length of time to cache routes this by configuring an `expiration` value in seconds:
+By default, when ISR is enabled, routes use [Vercel's cache shielding](https://vercel.com/docs/incremental-static-regeneration#differences-between-isr-and-cache-control-headers) and any Cache-Control headers are ignored. Configuring an `expiration` value (in seconds) allows you to control how long routes are cached. This means Cache-Control directives set by your application are also respected.
 
-```js title="astro.config.mjs" {7-10}
+The following example defines `expiration` to cache all pages on first request and save them for 1 day:
+
+```js title="astro.config.mjs" {7-9}
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
@@ -254,18 +271,16 @@ export default defineConfig({
   // ...
   adapter: vercel({
     isr: {
-      // caches all pages on first request and saves for 1 day
       expiration: 60 * 60 * 24,
     },
   }),
 });
 ```
 
-##### Excluding paths from caching
+##### On-demand invalidation
 
-To implement Vercel's [Draft mode](https://vercel.com/docs/build-output-api/v3/features#draft-mode), or [On-Demand Incremental Static Regeneration (ISR)](https://vercel.com/docs/build-output-api/v3/features#on-demand-incremental-static-regeneration-isr), you can create a bypass token and provide it to the `isr` config along with any routes to exclude from caching:
-
-```js title="astro.config.mjs" {6-15}
+To programmatically invalidate cached pages, create a bypass token and provide it to the `isr` config:
+```js title="astro.config.mjs" {6-9}
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
@@ -274,11 +289,33 @@ export default defineConfig({
         isr: {
             // A secret random string that you create.
             bypassToken: "005556d774a8",
+        }
+    })
+})
+```
+
+You can then invalidate a cached page by sending a HEAD or GET request to the page URL with the `x-prerender-revalidate` header set to your bypass token. See [Vercel's on-demand ISR documentation](https://vercel.com/docs/build-output-api/v3/features#on-demand-incremental-static-regeneration-isr) for details.
+
+
+##### Draft mode
+
+To bypass the ISR cache and render fresh content (e.g., for previewing unpublished CMS content), use [Vercel's Draft mode](https://vercel.com/docs/build-output-api/v3/features#draft-mode). This requires [defining a `bypassToken`](#on-demand-invalidation) in your configuration and reusing its value in your pages to [set a cookie](/en/guides/on-demand-rendering/#cookies) named `__prerender_bypass`.
+
+##### Excluding paths from caching
+
+Use the `exclude` option to prevent specific routes from being cached by ISR. These paths will always be rendered fresh on each request:
+```js title="astro.config.mjs" {6-13}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
+
+export default defineConfig({
+    adapter: vercel({
+        isr: {
             // Paths that will always be served fresh.
             exclude: [
-              '/preview', 
-              '/auth/[page]',
-              /^\/api\/.+/ // Regular expressions supported since @astrojs/vercel@v8.1.0
+                '/preview',
+                '/auth/[page]',
+                /^\/api\/.+/ // Regular expressions supported since @astrojs/vercel@v8.1.0
             ]
         }
     })
@@ -287,8 +324,11 @@ export default defineConfig({
 
 ### `includeFiles`
 
+<p>
+
 **Type:** `string[]`<br/>
 **Available for:** Serverless
+</p>
 
 Use this property to force files to be bundled with your function. This is helpful when you notice missing files.
 
@@ -306,8 +346,11 @@ export default defineConfig({
 
 ### `excludeFiles`
 
+<p>
+
 **Type:** `string[]`<br/>
 **Available for:** Serverless
+</p>
 
 Use this property to exclude any files from the bundling process that would otherwise be included.
 
@@ -325,8 +368,11 @@ export default defineConfig({
 
 ### `maxDuration`
 
+<p>
+
 **Type:** `number`<br/>
 **Available for:** Serverless
+</p>
 
 Use this property to extend or limit the maximum duration (in seconds) that Serverless Functions can run before timing out. See the [Vercel documentation](https://vercel.com/docs/functions/serverless-functions/runtimes#maxduration) for the default and maximum limit for your account plan.
 
@@ -344,9 +390,12 @@ export default defineConfig({
 
 ### `skewProtection`
 
+<p>
+
 **Type:** `boolean`<br/>
-**Available for:** Serverless
+**Available for:** Serverless<br />
 <Since pkg="@astrojs/vercel" v="7.6.0" />
+</p>
 
 Use this property to enable [Vercel Skew protection](https://vercel.com/docs/deployments/skew-protection) (available with Vercel Pro and Enterprise accounts).
 
@@ -362,27 +411,56 @@ export default defineConfig({
 });
 ```
 
+### `staticHeaders`
+
+<p>
+**Type:** `boolean`<br/>
+**Default:** `false`<br />
+**Available for:** Serverless <br/>
+<Since pkg="@astrojs/vercel" v="10.0.0" />
+</p>
+
+Enables specifying custom headers for prerendered pages in Vercel's configuration.
+
+If enabled, the adapter will save [static headers in the Vercel `vercel.json` file](https://vercel.com/docs/project-configuration#headers) when provided by Astro features, such as Content Security Policy.
+
+For example, when [Content Security Policy](/en/reference/configuration-reference/#securitycsp) is enabled, `staticHeaders` can be used to add the CSP `headers` to your Vercel configuration, instead of creating a `<meta>` element:
+
+```js title="astro.config.mjs" {9}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
+
+export default defineConfig({
+  security: {
+    csp: true
+  },
+  adapter: vercel({
+    staticHeaders: true 
+  })
+});
+```
+
 ### Running Astro middleware on Vercel Edge Functions
 
-The `@astrojs/vercel` adapter can create an [edge function](https://vercel.com/docs/functions/edge-functions) from an Astro middleware in your code base. When `edgeMiddleware` is enabled, an edge function will execute your middleware code for all requests including static assets, prerendered pages, and on-demand rendered pages.
+The `@astrojs/vercel` adapter can create an [edge function](https://vercel.com/docs/functions/edge-functions) from an Astro middleware in your code base. When [`middlewareMode`](/en/reference/adapter-reference/#middlewaremode) is set to `'edge'`, an edge function will execute your middleware code for all requests, including static assets, prerendered pages, and on-demand rendered pages.
 
 For on-demand rendered pages, the `context.locals` object is serialized using JSON and sent in a header for the serverless function, which performs the rendering. As a security measure, the serverless function will refuse to serve requests with a `403 Forbidden` response unless they come from the generated edge function.
 
-This is an opt-in feature. To enable it, set `edgeMiddleware` to `true`:
+This is an opt-in feature. To enable it, set `middlewareMode` to `'edge'`:
 
-```js title="astro.config.mjs" "edgeMiddleware: true"
+```js title="astro.config.mjs" "middlewareMode: 'edge'"
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   // ...
   adapter: vercel({
-    edgeMiddleware: true,
+    middlewareMode: 'edge',
   }),
 });
 ```
 
-The edge middleware has access to Vercel's [`RequestContext`](https://vercel.com/docs/functions/edge-middleware/middleware-api#requestcontext) as `ctx.locals.vercel.edge`. If you’re using TypeScript, you can get proper typings by updating `src/env.d.ts` to use `EdgeLocals`:
+The edge middleware has access to Vercel's [`RequestContext`](https://vercel.com/docs/functions/edge-middleware/middleware-api#requestcontext) as `ctx.locals.vercel.edge`. If you’re using TypeScript, you can [get proper typings](/en/guides/typescript/#extending-global-types) by updating `src/env.d.ts` to use `EdgeLocals`:
 
 ```ts
 type EdgeLocals = import('@astrojs/vercel').EdgeLocals
@@ -454,37 +532,5 @@ The `@astrojs/vercel` adapter supports specific Node.js versions for deploying y
 
 Check out the [Vercel documentation](https://vercel.com/docs/functions/serverless-functions/runtimes/node-js#default-and-available-versions) to learn more.
 
-## Experimental features
-
-The following features are also available for use, but may be subject to breaking changes in future updates. Please follow the [`@astrojs/vercel` CHANGELOG](https://github.com/withastro/astro/tree/main/packages/integrations/vercel/CHANGELOG.md) carefully for updates if you are using these features in your project.
-
-### `experimentalStaticHeaders`
-
-<p>
-**Type:** `boolean`<br/>
-**Default:** `false`<br />
-**Available for:** Serverless <br/>
-<Since pkg="@astrojs/vercel" v="8.2.0" />
-</p>
-
-Enables specifying custom headers for prerendered pages in Vercel's configuration.
-
-If enabled, the adapter will save [static headers in the Vercel `vercel.json` file](https://vercel.com/docs/project-configuration#headers) when provided by Astro features, such as Content Security Policy.
-
-For example, when [experimental Content Security Policy](/en/reference/experimental-flags/csp/) is enabled, `experimentalStaticHeaders` can be used to add the CSP `headers` to your Vercel configuration, instead of creating a `<meta>` element:
-
-```js title="astro.config.mjs" {9}
-import { defineConfig } from 'astro/config';
-import vercel from '@astrojs/vercel';
-
-export default defineConfig({
-  experimental: {
-    csp: true
-  },
-  adapter: vercel({
-    experimentalStaticHeaders: true 
-  })
-});
-```
 
 [astro-integration]: /en/guides/integrations-guide/

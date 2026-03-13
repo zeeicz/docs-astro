@@ -4,14 +4,14 @@ description: Strapi 헤드리스 CMS를 사용하여 Astro 프로젝트에 콘�
 sidebar:
   label: Strapi
 type: cms
-service: Strapi
+logo: strapi
 stub: false
 i18nReady: true
 ---
-
 import { Steps } from '@astrojs/starlight/components';
 import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import ReadMore from '~/components/ReadMore.astro';
 
 [Strapi](https://strapi.io/)는 사용자 정의가 가능한 오픈 소스 헤드리스 CMS입니다.
 
@@ -54,9 +54,11 @@ interface ImportMetaEnv {
   - package.json
 </FileTree>
 
+<ReadMore>Astro의 [환경 변수](/ko/guides/environment-variables/) 및 `.env` 파일에 대해 자세히 알아보세요.</ReadMore>
+
 ### API 래퍼 만들기
 
-`src/lib/strapi.ts`에 새 파일을 만들고 다음 래퍼 함수를 ​​추가하여 Strapi API와 상호 작용합니다.
+`src/lib/strapi.ts`에 새 파일을 만들고 다음 래퍼 함수를 추가하여 Strapi API와 상호 작용합니다.
 
 ```ts title="src/lib/strapi.ts"
 interface Props {
@@ -119,16 +121,14 @@ TypeScript를 사용하는 경우 `src/interfaces/article.ts`에서 Strapi 콘�
 
 ```ts title="src/interfaces/article.ts"
 export default interface Article {
-  id: number;
-  attributes: {
-    title: string;
-    description: string;
-    content: string;
-    slug: string;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-  };
+  documentId: number;
+  title: string;
+  description: string;
+  content: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
 }
 ```
 
@@ -172,16 +172,14 @@ export default interface Article {
     ```json
     [
       {
-        id: 1,
-        attributes: {
-          title: "What's inside a Black Hole",
-          description: "Maybe the answer is in this article, or not...",
-          content: "Well, we don't know yet...",
-          slug: "what-s-inside-a-black-hole",
-          createdAt: "2023-05-28T13:19:46.421Z",
-          updatedAt: "2023-05-28T13:19:46.421Z",
-          publishedAt: "2023-05-28T13:19:45.826Z"
-        }
+        documentId: 1,
+        title: "What's inside a Black Hole",
+        description: "Maybe the answer is in this article, or not...",
+        content: "Well, we don't know yet...",
+        slug: "what-s-inside-a-black-hole",
+        createdAt: "2023-05-28T13:19:46.421Z",
+        updatedAt: "2023-05-28T13:19:46.421Z",
+        publishedAt: "2023-05-28T13:19:45.826Z"
       },
       // ...
     ]
@@ -211,9 +209,11 @@ export default interface Article {
           <ul>
             {
               articles.map((article) => (
-                <a href={`/blog/${article.attributes.slug}/`}>
-                  {article.attributes.title}
-                </a>
+                <li>
+                  <a href={`/blog/${article.slug}/`}>
+                    {article.title}
+                  </a>
+                </li>
               ))
             }
           </ul>
@@ -259,7 +259,7 @@ export async function getStaticPaths() {
   });
 
   return articles.map((article) => ({
-    params: { slug: article.attributes.slug },
+    params: { slug: article.slug },
     props: article,
   }));
 }
@@ -283,7 +283,7 @@ export async function getStaticPaths() {
   });
 
   return articles.map((article) => ({
-    params: { slug: article.attributes.slug },
+    params: { slug: article.slug },
     props: article,
   }));
 }
@@ -295,23 +295,23 @@ const article = Astro.props;
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{article.attributes.title}</title>
+    <title>{article.title}</title>
   </head>
 
   <body>
     <main>
-      <img src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} />
+      <img src={import.meta.env.STRAPI_URL + article.image.data.url} />
 
-      <h1>{article.attributes.title}</h1>
+      <h1>{article.title}</h1>
 
       <!-- 일반 텍스트 렌더링 -->
-      <p>{article.attributes.content}</p>
+      <p>{article.content}</p>
       <!-- markdown 렌더링 -->
       <MyMarkdownComponent>
-        {article.attributes.content}
+        {article.content}
       </MyMarkdownComponent>
       <!-- html 렌더링 -->
-      <Fragment set:html={article.attributes.content} />
+      <Fragment set:html={article.content} />
     </main>
   </body>
 </html>
@@ -352,23 +352,23 @@ try {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{article.attributes.title}</title>
+    <title>{article.title}</title>
   </head>
 
   <body>
     <main>
-      <img src={import.meta.env.STRAPI_URL + article.attributes.image.data.attributes.url} />
+      <img src={import.meta.env.STRAPI_URL + article.image.data.url} />
 
-      <h1>{article.attributes.title}</h1>
+      <h1>{article.title}</h1>
 
       <!-- 일반 텍스트 렌더링 -->
-      <p>{article.attributes.content}</p>
+      <p>{article.content}</p>
       <!-- markdown 렌더링 -->
       <MyMarkdownComponent>
-        {article.attributes.content}
+        {article.content}
       </MyMarkdownComponent>
       <!-- html 렌더링 -->
-      <Fragment set:html={article.attributes.content} />
+      <Fragment set:html={article.content} />
     </main>
   </body>
 </html>

@@ -14,7 +14,7 @@ Astro Actions vous permet de définir et d'appeler des fonctions backend avec s�
 
 Utilisez des actions à la place de points de terminaison d'API pour une communication transparente entre votre code client et votre code serveur et pour :
 
-- Valider automatiquement les entrées de données JSON et de formulaire à l'aide de la [validation Zod](https://zod.dev/?id=primitives).
+- Valider automatiquement les entrées de données JSON et de formulaire à l'aide de la [validation Zod](/fr/reference/modules/astro-zod/).
 - Générer des fonctions avec sûreté du typage pour appeler votre backend à partir du client et même [à partir des actions de formulaire HTML](#appeler-des-actions-depuis-une-action-de-formulaire-html). Pas besoin d'appels manuels à `fetch()`.
 - Standardiser les erreurs du backend avec l'objet [`ActionError`](/fr/reference/modules/astro-actions/#actionerror).
 
@@ -24,7 +24,7 @@ Les actions sont définies dans un objet `server` exporté depuis `src/actions/i
 
 ```ts title="src/actions/index.ts"
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { z } from 'astro/zod';
 
 export const server = {
   myAction: defineAction({ /* ... */ })
@@ -48,7 +48,7 @@ async () => {
 </script>
 ```
 
-### Écrivez votre première action
+### Écrire votre première action
 
 Suivez ces étapes pour définir une action et pour l'appeler dans une balise `script` de votre page Astro.
 
@@ -62,22 +62,22 @@ Suivez ces étapes pour définir une action et pour l'appeler dans une balise `s
     }
     ```
 
-2. Importez l'utilitaire `defineAction()` depuis `astro:actions` et l'objet `z` depuis `astro:schema`.
+2. Importez l'utilitaire `defineAction()` depuis `astro:actions` et l'objet `z` depuis `astro/zod`.
 
     ```ts ins={1-2} title="src/actions/index.ts"
     import { defineAction } from 'astro:actions';
-    import { z } from 'astro:schema';
+    import { z } from 'astro/zod';
 
     export const server = {
       // déclarations d'action
     }
     ```
 
-3. Utilisez l'utilitaire `defineAction()` pour définir une action `getGreeting`. La propriété `input` sera utilisée pour valider les paramètres d'entrée avec un schéma [Zod](https://zod.dev) et la fonction `handler()` inclut la logique backend à exécuter sur le serveur.
+3. Utilisez l'utilitaire `defineAction()` pour définir une action `getGreeting`. La propriété `input` sera utilisée pour valider les paramètres d'entrée avec un [schéma Zod](/fr/reference/modules/astro-zod/#validateurs-de-types-de-données-courants) et la fonction `handler()` inclut la logique backend à exécuter sur le serveur.
 
     ```ts ins={5-12} title="src/actions/index.ts"
     import { defineAction } from 'astro:actions';
-    import { z } from 'astro:schema';
+    import { z } from 'astro/zod';
 
     export const server = {
       getGreeting: defineAction({
@@ -137,8 +137,7 @@ Toutes les actions de votre projet doivent être exportées depuis l'objet `serv
 
 Par exemple, pour regrouper toutes vos actions utilisateur, vous pouvez créer un fichier `src/actions/user.ts` et imbriquer les définitions de `getUser` et `createUser` dans un seul objet `user`.
 
-```ts
-// src/actions/user.ts
+```ts title="src/actions/user.ts"
 import { defineAction } from 'astro:actions';
 
 export const user = {
@@ -208,13 +207,13 @@ Vous pouvez utiliser la classe `ActionError` fournie pour générer une erreur �
 
 #### Création d'une `ActionError`
 
-Pour générer une erreur, importez la classe `ActionError()` depuis le module `astro:actions`. Transmettez-lui un code d'état lisible par l'homme (par exemple `"NOT_FOUND"` ou `"BAD_REQUEST"`), et un `message` facultatif pour fournir des informations supplémentaires sur l'erreur.
+Pour générer une erreur, importez la [classe `ActionError()`](/fr/reference/modules/astro-actions/#actionerror) depuis le module `astro:actions`. Transmettez-lui un code d'état lisible par l'homme (par exemple `"NOT_FOUND"` ou `"BAD_REQUEST"`), et un `message` facultatif pour fournir des informations supplémentaires sur l'erreur.
 
 Cet exemple génère une erreur d'une action `likePost` lorsqu'un utilisateur n'est pas connecté, après avoir vérifié un hypothétique cookie de « session utilisateur » pour l'authentification :
 
 ```ts title="src/actions/index.ts" ins=/ActionError(?= )/ ins={9-12}
 import { defineAction, ActionError } from "astro:actions";
-import { z } from "astro:schema";
+import { z } from "astro/zod";
 
 export const server = {
   likePost: defineAction({
@@ -291,7 +290,7 @@ Les actions acceptent les données JSON par défaut. Pour accepter les données 
 
 ```ts title="src/actions/index.ts" ins={6}
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { z } from 'astro/zod';
 
 export const server = {
   comment: defineAction({
@@ -300,6 +299,55 @@ export const server = {
     handler: async (input) => { /* ... */ },
   })
 }
+```
+
+### Utilisation de validateurs avec des champs de formulaire
+
+Lorsque votre action est [configurée pour accepter les données d'un formulaire](/fr/reference/modules/astro-actions/#propriété-accept), vous pouvez utiliser n'importe quel validateur Zod pour valider vos champs (par exemple `z.coerce.date()` pour les champs de date). Les fonctions d'extension, telles que `.refine()`, `.transform()` et `.pipe()`, sont également prises en charge par le validateur `z.object()`.
+
+De plus, Astro fournit une gestion spéciale sous le capot pour votre commodité afin de valider les types de champ suivants :
+
+- Les champs de type `number` peuvent être validés à l'aide de `z.number()`
+- Les champs de type `checkbox` peuvent être validés à l'aide de `z.coerce.boolean()`
+- Les champs de type `file` peuvent être validés à l'aide de `z.instanceof(File)`
+- Plusieurs champs du même nom (`name`) peuvent être validés à l'aide de `z.array(/* validateur */)`
+- Tous les autres champs peuvent être validés à l'aide de `z.string()`
+
+Lorsque votre formulaire est soumis avec des champs vides, le type du résultat peut ne pas correspondre à celui de votre validateur de saisie (`input`). Les valeurs vides sont converties en `null`, sauf lors de la validation de tableaux ou de booléens. Par exemple, si une entrée de type `text` est soumise avec une valeur vide, le résultat sera `null` au lieu d'une chaîne de caractères vide (`""`).
+
+Pour appliquer une union de différents validateurs, utilisez l'encapsuleur `z.discriminatedUnion()` afin de restreindre le type en fonction d'un champ de formulaire spécifique. Cet exemple accepte un envoi de formulaire pour créer ou mettre à jour un utilisateur, en utilisant le champ de formulaire utilisant le nom `type` pour déterminer l'objet à valider :
+
+```ts title="src/actions/index.ts" {7-21} "create" "update"
+import { defineAction } from 'astro:actions';
+import { z } from 'astro/zod';
+
+export const server = {
+  changeUser: defineAction({
+    accept: 'form',
+    input: z.discriminatedUnion('type', [
+      z.object({
+        // Correspond lorsque le champ `type` a la valeur `create`
+        type: z.literal('create'),
+        name: z.string(),
+        email: z.email(),
+      }),
+      z.object({
+        // Correspond lorsque le champ `type` a la valeur `update`
+        type: z.literal('update'),
+        id: z.number(),
+        name: z.string(),
+        email: z.email(),
+      }),
+    ]),
+    async handler(input) {
+      if (input.type === 'create') {
+        // input correspond à { type: 'create', name: string, email: string }
+      } else {
+        // input correspond à { type: 'update', id: number, name: string, email: string }
+      }
+    },
+  }),
+};
 ```
 
 ### Validation des données du formulaire
@@ -326,17 +374,17 @@ L'exemple suivant montre un formulaire d'inscription à une newsletter validé q
     </form>
     ```
 
-2. Définir une action `newsletter` pour gérer le formulaire soumis. Validez le champ `email` en utilisant le validateur `z.string().email()` et la case à cocher `terms` en utilisant `z.boolean()` :
+2. Définir une action `newsletter` pour gérer le formulaire soumis. Validez le champ `email` en utilisant le validateur `z.email()` et la case à cocher `terms` en utilisant `z.boolean()` :
 
     ```ts title="src/actions/index.ts" ins={5-12}
     import { defineAction } from 'astro:actions';
-    import { z } from 'astro:schema';
+    import { z } from 'astro/zod';
 
     export const server = {
       newsletter: defineAction({
         accept: 'form',
         input: z.object({
-          email: z.string().email(),
+          email: z.email(),
           terms: z.boolean(),
         }),
         handler: async ({ email, terms }) => { /* ... */ },
@@ -383,7 +431,7 @@ Vous pouvez valider les entrées du formulaire avant la soumission à l'aide des
 
 Pour récupérer les erreurs de saisie, utilisez l'utilitaire `isInputError()` pour vérifier si une erreur a été provoquée par une entrée non valide. Les erreurs de saisie contiennent un objet `fields` avec des messages pour chaque nom d'entrée qui n'a pas pu être validé. Vous pouvez utiliser ces messages pour demander à votre utilisateur de corriger sa soumission.
 
-L'exemple suivant vérifie l'erreur avec `isInputError()`, puis vérifie si l'erreur se trouve dans le champ e-mail, avant de créer finalement un message à partir des erreurs. Vous pouvez utiliser la manipulation DOM JavaScript ou votre infrastructure d'interface utilisateur préférée pour afficher ce message aux utilisateurs.
+L'exemple suivant vérifie l'erreur avec `isInputError()`, puis vérifie si l'erreur se trouve dans le champ e-mail, avant de créer finalement un message à partir des erreurs. Vous pouvez utiliser la manipulation du DOM avec JavaScript ou votre framework d'interface utilisateur préféré pour afficher ce message aux utilisateurs.
 
 ```js /isInputError(?= )/ {5-12}
 import { actions, isInputError } from 'astro:actions';
@@ -444,7 +492,7 @@ Par exemple, supposons que vous ayez une action `createProduct` qui renvoie l'id
 
 ```ts title="src/actions/index.ts" mark={10}
 import { defineAction } from 'astro:actions';
-import { z } from 'astro:schema';
+import { z } from 'astro/zod';
 
 export const server = {
   createProduct: defineAction({
@@ -556,7 +604,7 @@ const result = Astro.getActionResult(actions.addToCart);
 
 <p><Since v="5.0.0" /></p>
 
-Les résultats de l'action sont affichés sous forme de soumission POST. Cela signifie que le résultat sera réinitialisé sur `undefined` lorsqu'un utilisateur fermera et revisitera la page. L'utilisateur verra également une boîte de dialogue « Confirmer la nouvelle soumission du formulaire ?» s'il tente d'actualiser la page.
+Les résultats de l'action sont affichés sous forme de soumission POST. Cela signifie que le résultat sera réinitialisé sur `undefined` lorsqu'un utilisateur fermera et revisitera la page. L'utilisateur verra également une boîte de dialogue « Confirmer le nouvel envoi du formulaire ? » s'il tente d'actualiser la page.
 
 Pour personnaliser ce comportement, vous pouvez ajouter un middleware pour gérer manuellement le résultat de l'action. Vous pouvez choisir de conserver le résultat de l'action à l'aide d'un cookie ou d'un stockage de session.
 
@@ -577,7 +625,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 });
 ```
 
-Une pratique courante pour conserver les résultats des formulaires HTML est le [modèle POST / Redirect / GET](https://fr.wikipedia.org/wiki/Post-redirect-get). Cette redirection supprime la boîte de dialogue « Confirmer la nouvelle soumission du formulaire ?» lorsque la page est actualisée et permet aux résultats de l'action d'être conservés tout au long de la session de l'utilisateur.
+Une pratique courante pour conserver les résultats des formulaires HTML est le [modèle POST / Redirect / GET](https://fr.wikipedia.org/wiki/Post-redirect-get). Cette redirection supprime la boîte de dialogue « Confirmer le nouvel envoi du formulaire ? » lorsque la page est actualisée et permet aux résultats de l'action d'être conservés tout au long de la session de l'utilisateur.
 
 Cet exemple applique le modèle POST / Redirect / GET à toutes les soumissions de formulaire utilisant le stockage de session avec [l'adaptateur de serveur Netlify](/fr/guides/integrations-guide/netlify/) installé. Les résultats de l'action sont écrits dans un magasin de sessions à l'aide de [Netlify Blob](https://docs.netlify.com/blobs/overview/) et récupérés après une redirection à l'aide d'un ID de session :
 
@@ -657,7 +705,7 @@ Les actions sont accessibles en tant que points de terminaison publics en foncti
 
 Pour autoriser les demandes d'action, ajoutez une vérification d'authentification à votre gestionnaire d'actions. Vous souhaiterez peut-être utiliser [une bibliothèque d'authentification](/fr/guides/authentication/) pour gérer la gestion des sessions et les informations utilisateur.
 
-Les actions exposent l'objet `APIContext` complet pour accéder aux propriétés transmises par le middleware à l'aide de `context.locals`. Lorsqu'un utilisateur n'est pas autorisé, vous pouvez générer une `ActionError` avec le code `UNAUTHORIZED` :
+Les actions exposent [un sous-ensemble de l'objet `APIContext`](/fr/reference/modules/astro-actions/#actionapicontext) pour accéder aux propriétés transmises par le middleware à l'aide de `context.locals`. Lorsqu'un utilisateur n'est pas autorisé, vous pouvez générer une `ActionError` avec le code `UNAUTHORIZED` :
 
 ```ts title="src/actions/index.ts" {6-8}
 import { defineAction, ActionError } from 'astro:actions';
@@ -680,9 +728,9 @@ export const server = {
 
 Astro recommande d'autoriser les sessions utilisateur à partir de votre gestionnaire d'actions pour respecter les niveaux d'autorisation et la limitation de débit par action. Cependant, vous pouvez également limiter les demandes à toutes les actions (ou à un sous-ensemble d'actions) à partir du middleware.
 
-Utilisez la fonction `getActionContext()` de votre middleware pour récupérer des informations sur les demandes d'action entrantes. Cela inclut le nom de l'action et si cette action a été appelée à l'aide d'une fonction d'appel de procédure à distance (RPC) côté client (par exemple, `actions.blog.like()`) ou d'un formulaire HTML.
+Utilisez la [fonction `getActionContext()`](/fr/reference/modules/astro-actions/#getactioncontext) de votre middleware pour récupérer des informations sur les demandes d'action entrantes. Cela inclut le nom de l'action et si cette action a été appelée à l'aide d'une fonction d'appel de procédure à distance (RPC) côté client (par exemple, `actions.blog.like()`) ou d'un formulaire HTML.
 
-L'exemple suivant rejette toutes les demandes d'action qui ne disposent pas d'un jeton de session valide. Si la vérification échoue, une réponse « Interdit » est renvoyée. Remarque : cette méthode garantit que les actions ne sont accessibles que lorsqu'une session est présente, mais ne remplace _pas_ une autorisation sécurisée.
+L'exemple suivant rejette toutes les demandes d'action qui ne disposent pas d'un jeton de session valide. Si la vérification échoue, une réponse « Forbidden » est renvoyée. Remarque : cette méthode garantit que les actions ne sont accessibles que lorsqu'une session est présente, mais ne remplace _pas_ une autorisation sécurisée.
 
 ```ts title="src/middleware.ts"
 import { defineMiddleware } from 'astro:middleware';

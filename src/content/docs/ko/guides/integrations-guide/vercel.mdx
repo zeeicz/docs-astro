@@ -10,7 +10,7 @@ i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
 import Since from '~/components/Since.astro';
-import ReadMore from '~/components/ReadMore.astro';
+import ReadMore from '~/components/ReadMore.astro'
 import { Steps } from '@astrojs/starlight/components';
 
 이 어댑터를 사용하면 Astro가 [서버 아일랜드](/ko/guides/server-islands/), [액션](/ko/guides/actions/), [세션](/ko/guides/sessions/)을 포함하여 [요청 시 렌더링되는 라우트 및 기능](/ko/guides/on-demand-rendering/)을 [Vercel](https://www.vercel.com)에 배포할 수 있습니다.
@@ -100,12 +100,13 @@ vercel deploy --prebuilt
 
 이 어댑터를 구성하려면, `astro.config.mjs` 파일의 `vercel()` 함수 호출에 객체를 전달하세요.
 
-### webAnalytics
+### `webAnalytics`
 
+<p>
 **타입:** `VercelWebAnalyticsConfig`<br/>
 **사용 가능한 모드:** Serverless, Static<br/>
-
 <Since v="3.8.0" pkg="@astrojs/vercel" />
+</p>
 
 `@vercel/analytics@1.3.x` 이하 버전에서는 Astro 구성에서 `webAnalytics: { enabled: true }`를 설정하여 모든 페이지에 Vercel의 추적 스크립트를 주입할 수 있습니다.
 
@@ -127,10 +128,12 @@ export default defineConfig({
 
 ### `imagesConfig`
 
-**타입:** `VercelImageConfig`<br/>
-**사용 가능한 모드:** Serverless, Static
+<p>
 
+**타입:** `VercelImageConfig`<br/>
+**사용 가능한 모드:** Serverless, Static<br />
 <Since v="3.3.0" pkg="@astrojs/vercel" />
+</p>
 
 [Vercel의 이미지 최적화 API](https://vercel.com/docs/concepts/image-optimization)에 대한 구성 옵션입니다. 지원되는 매개변수의 전체 목록은 대한 구성 옵션입니다. 지원되는 모든 매개변수에 대해서는 [Vercel의 이미지 구성 문서](https://vercel.com/docs/build-output-api/v3/configuration#images)를 참조하세요.
 
@@ -153,10 +156,12 @@ export default defineConfig({
 
 ### `imageService`
 
-**타입:** `boolean`<br/>
-**사용 가능한 모드:** Serverless, Static
+<p>
 
+**타입:** `boolean`<br/>
+**사용 가능한 모드:** Serverless, Static<br />
 <Since v="3.3.0" pkg="@astrojs/vercel" />
+</p>
 
 활성화되면 Vercel 이미지 최적화 API에 의해 구동되는 [이미지 서비스](/ko/reference/image-service-reference/)가 자동으로 구성되고 프로덕션에서 사용됩니다. 개발 모드에서는 [`devImageService`](#devimageservice)에 지정된 이미지 서비스가 대신 사용됩니다.
 
@@ -195,11 +200,13 @@ import astroLogo from '../assets/logo.png';
 
 ### `devImageService`
 
-**타입:** `'sharp' | string`<br/>
-**사용 가능한 모드:** Serverless, Static
+<p>
 
+**타입:** `'sharp' | string`<br/>
+**기본값:** `sharp`<br />
+**사용 가능한 모드:** Serverless, Static<br />
 <Since v="3.8.0" pkg="@astrojs/vercel" />
-**기본값**: `sharp`
+</p>
 
 [imageService](#imageservice)가 활성화된 경우 개발모드에서 사용할 이미지 서비스를 구성할 수 있습니다. 이는 개발 기기에 Sharp의 종속성을 설치할 수는 없는 경우 Squoosh와 같은 다른 이미지 서비스를 사용하여 개발 환경에서 이미지를 미리 볼 수 있으므로 유용할 수 있습니다. 빌드는 영향을 받지 않고 항상 Vercel의 이미지 최적화를 사용합니다.
 
@@ -220,11 +227,13 @@ export default defineConfig({
 
 ### `isr`
 
-**타입:** <code>boolean | VercelISRConfig</code><br/>
-**사용 가능한 모드:** Serverless
+<p>
 
+**타입:** `boolean | VercelISRConfig`<br/>
+**기본값:** `false`<br />
+**사용 가능한 모드:** Serverless<br />
 <Since v="7.2.0" pkg="@astrojs/vercel" />
-**기본값**: `false`
+</p>
 
 첫 번째 요청 후 사전 렌더링된 페이지와 동일한 방식으로 주문형 렌더링된 페이지를 캐시하는 [ISR (증분 정적 재생성)](https://vercel.com/docs/incremental-static-regeneration) 함수로 프로젝트를 배포할 수 있습니다.
 
@@ -250,9 +259,11 @@ ISR 함수 요청에는 정적 모드의 [요청](/ko/reference/api-reference/#r
 
 ##### 시간 기반 무효화
 
-`expiration` 값을 초 단위로 구성하여 경로를 캐시하는 시간을 변경할 수 있습니다.
+기본적으로 ISR이 활성화되면 라우트는 [Vercel의 캐시 보호](https://vercel.com/docs/incremental-static-regeneration#differences-between-isr-and-cache-control-headers)를 사용하며 모든 Cache-Control 헤더는 무시됩니다. `expiration` 값(초 단위)을 구성하여 라우트가 캐시되는 기간을 제어할 수 있습니다. 이는 애플리케이션에서 설정한 Cache-Control 지시어도 무시되지 않고 반영된다는 것을 의미합니다.
 
-```js title="astro.config.mjs" {7-10}
+다음 예시는 첫 번째 요청 시 모든 페이지를 캐시하고 1일 동안 저장하도록 `expiration`을 정의합니다.
+
+```js title="astro.config.mjs" {7-9}
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
@@ -260,18 +271,16 @@ export default defineConfig({
   // ...
   adapter: vercel({
     isr: {
-      // 첫 번째 요청 시 모든 페이지를 캐시하고 1일 동안 저장합니다.
       expiration: 60 * 60 * 24,
     },
   }),
 });
 ```
 
-##### 캐싱에서 경로 제외
+##### 요청 시 무효화
 
-Vercel의 [초안 모드](https://vercel.com/docs/build-output-api/v3/features#draft-mode) 또는 [주문형 증분형 정적 재생성 (ISR)](https://vercel.com/docs/build-output-api/v3/features#on-demand-incremental-static-regeneration-isr)을 구현하려면 bypass 토큰을 생성하고 이를 캐싱에서 제외할 경로와 함께 `isr` 구성에 제공할 수 있습니다.
-
-```js title="astro.config.mjs" {6-15}
+캐시된 페이지를 프로그래밍 방식으로 무효화하려면 바이패스 토큰을 생성하고 이를 `isr` 구성에 제공하세요.
+```js title="astro.config.mjs" {6-9}
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
@@ -280,9 +289,31 @@ export default defineConfig({
     isr: {
       // 여러분이 생성하는 무작위 비밀 문자열입니다.
       bypassToken: '005556d774a8',
+    }
+  })
+})
+```
+
+캐시된 페이지를 무효화하려면, 페이지 URL로 HEAD 또는 GET 요청을 보내고 `x-prerender-revalidate` 헤더를 바이패스 토큰으로 설정하면 됩니다. 자세한 내용은 [Vercel의 온디맨드 ISR 문서](https://vercel.com/docs/build-output-api/v3/features#on-demand-incremental-static-regeneration-isr)를 참조하세요.
+
+
+##### 드래프트 모드
+
+ISR 캐시를 우회하고 최신 콘텐츠를 렌더링하려면 (예: 게시되지 않은 CMS 콘텐츠 미리보기), [Vercel의 드래프트 모드](https://vercel.com/docs/build-output-api/v3/features#draft-mode)를 사용하세요. 이를 위해서는 설정에서 [`bypassToken`을 정의](#요청-시-무효화)하고 페이지에서 그 값을 재사용하여 `__prerender_bypass`라는 [쿠키를 설정](/ko/guides/on-demand-rendering/#쿠키)해야 합니다.
+
+##### 캐싱에서 경로 제외
+
+`exclude` 옵션을 사용하여 특정 라우트가 ISR에 의해 캐시되는 것을 방지할 수 있습니다. 이러한 경로는 요청 시 항상 최신 상태로 렌더링됩니다.
+```js title="astro.config.mjs" {6-13}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
+
+export default defineConfig({
+adapter: vercel({
+    isr: {
       // 항상 최신 상태로 제공되는 경로입니다.
       exclude: [
-        '/preview', 
+        '/preview',
         '/auth/[page]',
         /^\/api\/.+/ // `@astrojs/vercel@v8.1.0`부터 정규 표현식이 지원됩니다.
       ]
@@ -293,8 +324,11 @@ export default defineConfig({
 
 ### `includeFiles`
 
+<p>
+
 **타입:** `string[]`<br/>
 **사용 가능한 모드:** Serverless
+</p>
 
 파일을 함수와 번들링하기 위해 이 속성을 사용합니다. 이는 누락된 파일을 발견했을 때 유용합니다.
 
@@ -312,8 +346,11 @@ export default defineConfig({
 
 ### `excludeFiles`
 
+<p>
+
 **타입:** `string[]`<br/>
 **사용 가능한 모드:** Serverless
+</p>
 
 이 속성을 사용하면 포함된 파일을 번들링 프로세스에서 제외할 수 있습니다.
 
@@ -331,8 +368,11 @@ export default defineConfig({
 
 ### `maxDuration`
 
+<p>
+
 **타입:** `number`<br/>
 **사용 가능한 모드:** Serverless
+</p>
 
 이 속성을 사용하여 서버리스 함수가 타임아웃되기 전에 실행될 수 있는 최대 시간(초)을 연장하거나 제한할 수 있습니다. 계정 플랜의 기본 및 최대 한도는 [Vercel 문서](https://vercel.com/docs/functions/serverless-functions/runtimes#maxduration)를 참조하세요.
 
@@ -350,9 +390,12 @@ export default defineConfig({
 
 ### `skewProtection`
 
+<p>
+
 **타입:** `boolean`<br/>
-**사용 가능한 모드:** Serverless
+**사용 가능한 모드:** Serverless<br />
 <Since pkg="@astrojs/vercel" v="7.6.0" />
+</p>
 
 이 속성을 사용하여 [Vercel Skew protection](https://vercel.com/docs/deployments/skew-protection) (Vercel Pro 및 Enterprise 계정에서 사용 가능)을 활성화합니다.
 
@@ -388,8 +431,7 @@ export default defineConfig({
 });
 ```
 
-에지 미들웨어는 `ctx.locals.vercel.edge`로 Vercel의 [`RequestContext`](https://vercel.com/docs/functions/edge-middleware/middleware-api#requestcontext)에 액세스할 수 있습니다. TypeScript를 사용하는 경우 `EdgeLocals`를 사용하기 위해 `src/env.d.ts` 파일을 업데이트하여 적절한 타입을 얻을 수 있습니다.
-
+에지 미들웨어는 `ctx.locals.vercel.edge`로 Vercel의 [`RequestContext`](https://vercel.com/docs/functions/edge-middleware/middleware-api#requestcontext)에 액세스할 수 있습니다. TypeScript를 사용하는 경우 `EdgeLocals`를 사용하기 위해 `src/env.d.ts` 파일을 업데이트하여 [적절한 타입](/ko/guides/typescript/#전역-타입-확장하기)을 얻을 수 있습니다.
 
 ```ts
 type EdgeLocals = import('@astrojs/vercel').EdgeLocals
@@ -479,14 +521,14 @@ Vercel 구성에서 사전 렌더링된 페이지에 대한 사용자 정의 헤
 
 이 기능이 활성화되면, Astro 기능 (예: 콘텐츠 보안 정책)에서 제공하는 경우 어댑터는 [정적 헤더를 `vercel.json` 파일](https://vercel.com/docs/project-configuration#headers)에 저장합니다.
 
-예를 들어, [실험적인 콘텐츠 보안 정책](/ko/reference/experimental-flags/csp/)이 활성화된 경우, `<meta>` 요소를 생성하는 대신 `experimentalStaticHeaders`를 사용하여 CSP `headers`를 Vercel 구성에 추가할 수 있습니다.
+예를 들어, [실험적인 콘텐츠 보안 정책](/ko/reference/configuration-reference/)이 활성화된 경우, `<meta>` 요소를 생성하는 대신 `experimentalStaticHeaders`를 사용하여 CSP `headers`를 Vercel 구성에 추가할 수 있습니다.
 
 ```js title="astro.config.mjs" {9}
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  experimental: {
+  security: {
     csp: true
   },
   adapter: vercel({

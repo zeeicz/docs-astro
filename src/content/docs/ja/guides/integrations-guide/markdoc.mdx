@@ -8,10 +8,10 @@ githubIntegrationURL: 'https://github.com/withastro/astro/tree/main/packages/int
 category: other
 i18nReady: false
 ---
-import { FileTree } from '@astrojs/starlight/components';
+import { FileTree, Steps } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
-import { Steps } from '@astrojs/starlight/components';
 import ReadMore from '~/components/ReadMore.astro';
+import Since from '~/components/Since.astro';
 
 この[**Astroインテグレーション**][astro-integration]は、[Markdoc](https://markdoc.dev/)を使用してコンポーネント、ページ、およびコンテンツコレクションのエントリを作成できるようにします。
 
@@ -113,7 +113,7 @@ Markdocファイルは、コンテンツコレクション内でのみ使用で�
       - quick-start.mdoc
 </FileTree>
 
-次に、[コンテンツコレクションAPI](/ja/guides/content-collections/#コレクションのクエリ)を使用してコレクションをクエリします。
+次に、[コンテンツコレクションAPI](/ja/guides/content-collections/#querying-build-time-collections)を使用してコレクションをクエリします。
 
 ```astro title="src/pages/why-markdoc.astro"
 ---
@@ -232,7 +232,7 @@ export default defineMarkdocConfig({
 
 ### クライアントサイドUIコンポーネントを使用する
 
-タグとノードは`.astro`ファイルに制限されています。クライアントサイドUIコンポーネントをMarkdocに埋め込むには、[フレームワークコンポーネントをレンダリングするラッパー`.astro`コンポーネントを使用](/ja/guides/framework-components/#フレームワークコンポーネントをネストさせる)し、目的の`client:`ディレクティブを指定します。
+タグとノードは`.astro`ファイルに制限されています。クライアントサイドUIコンポーネントをMarkdocに埋め込むには、[フレームワークコンポーネントをレンダリングするラッパー`.astro`コンポーネントを使用](/ja/guides/framework-components/#フレームワークコンポーネントのネスト)し、目的の`client:`ディレクティブを指定します。
 
 この例では、React `Aside.tsx`コンポーネントを`ClientAside.astro`コンポーネントでラップします。
 
@@ -419,6 +419,7 @@ Astroの`<Image />`コンポーネントは、Markdocで直接使用すること
 
     ```astro title="src/components/MarkdocImage.astro"
     ---
+    import type { ImageMetadata } from "astro";
     import { Image } from "astro:assets";
     interface Props {
       src: ImageMetadata;
@@ -431,8 +432,9 @@ Astroの`<Image />`コンポーネントは、Markdocで直接使用すること
 
 2. `<Image />`コンポーネントには、`![]()`構文では提供できないリモート画像の`width`と`height`が必要です。リモート画像を使用する際のエラーを回避するには、リモートURLの`src`が見つかった場合に標準のHTML `<img>`タグをレンダリングするようにコンポーネントを更新します。
 
-    ```astro title="src/components/MarkdocImage.astro" ins="| string" del={9} ins={10-12}
+    ```astro title="src/components/MarkdocImage.astro" ins="| string" del={10} ins={11-13}
     ---
+    import type { ImageMetadata } from "astro";
     import { Image } from "astro:assets";
     interface Props {
       src: ImageMetadata | string;
@@ -484,7 +486,7 @@ Markdocの`image`タグを使用すると、`![]()`構文では不可能な追�
 
     ```astro title="src/components/MarkdocFigure.astro"
     ---
-    // src/components/MarkdocFigure.astro
+    import type { ImageMetadata } from "astro";
     import { Image } from "astro:assets";
 
     interface Props {
@@ -593,6 +595,13 @@ Astro Markdocインテグレーションは、`markdoc.config.js`ファイルで
 
 ### `allowHTML`
 
+<p>
+
+**Type:** `boolean`<br />
+**Default:** `false`<br />
+<Since v="0.4.4" pkg="@astrojs/markdoc" />
+</p>
+
 Markdocタグやノードと並べてHTMLマークアップを記述できるようにします。
 
 デフォルトでは、MarkdocはHTMLマークアップを意味のあるコンテンツとして認識しません。
@@ -614,6 +623,13 @@ HTML要素をコンテンツと並べて含めることができる、よりMark
 :::
 
 ### `ignoreIndentation`
+
+<p>
+
+**Type:** `boolean`<br />
+**Default:** `false`<br />
+<Since v="0.7.0" pkg="@astrojs/markdoc" />
+</p>
 
 デフォルトでは、4つのスペースでインデントされたコンテンツはコードブロックとして扱われます。残念ながら、この動作により、複雑な構造を持つドキュメントの読みやすさを向上させるために任意のレベルのインデントを使用することが困難になります。
 

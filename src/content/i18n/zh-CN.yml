@@ -20,9 +20,11 @@ deploy.altSectionTitle: 更多部署指南
 deploy.ssrTag: SSR
 deploy.staticTag: 静态
 # CMS Guides vocabulary
+cms.featuredSubheading: 精选 CMS 合作伙伴
+cms.allSubheading: 全部 CMS 指南
 cms.navTitle: 更多 CMS 指南
 # Media Guides vocabulary
-media.navTitle: 更多 DAM 指南
+media.navTitle: 更多托管媒体指南
 # Migration Guides vocabulary
 migration.navTitle: 更多迁移指南
 # `<RecipeLinks>` vocabulary
@@ -51,6 +53,7 @@ progress.done: 完成
 # Tutorial Navigation
 tutorial.trackerLabel: 教程跟踪
 tutorial.unit: 单元
+tutorial.title.prefix: '搭建博客教程：{{title}}'
 # Tutorial
 tutorial.getReady: 准备好…
 # Code snippet vocabulary

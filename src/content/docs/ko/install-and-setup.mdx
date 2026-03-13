@@ -4,9 +4,6 @@ sidebar:
   label: 설치
 description: 'Astro를 설치하고 새 프로젝트를 시작하는 방법'
 i18nReady: true
-banner:
-  content: |
-    Astro v5가 출시되었습니다! <a href="/ko/guides/upgrade-to/v5/">사이트를 업그레이드하는 방법을 알아보세요.</a>
 ---
 import { Tabs, TabItem, FileTree, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
@@ -24,7 +21,7 @@ Astro를 수동으로 설치하려면 [단계별 수동 설치 가이드](#수�
 
 ## 사전 준비 사항
 
-- **Node.js** - `v18.20.8` 또는 `v20.3.0`, `v22.0.0` 이상 (`v19` 및 `v21`은 지원되지 않습니다.)
+- **Node.js** - `v22.12.0` 이상. `v23`과 같은 홀수 버전은 지원되지 않습니다.
 - **텍스트 편집기** - [공식 Astro 확장 프로그램](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode)이 포함된 [VS Code](https://code.visualstudio.com/)를 권장합니다.
 - **터미널** - Astro는 CLI (명령줄 인터페이스)를 통해 액세스됩니다.
 
@@ -292,7 +289,7 @@ Astro는 기본적으로 최신 JavaScript를 지원하는 브라우저를 대�
     
     React, Svelte 등과 같은 [UI 프레임워크 컴포넌트](/ko/guides/framework-components/)를 포함하거나 프로젝트에서 MDX 또는 Partytown과 같은 다른 도구를 사용하려면 여기에서 [통합을 수동으로 가져오고 구성](/ko/guides/integrations-guide/)합니다.
     
-    자세한 내용은 Astro의 [API 구성 참조](/ko/reference/configuration-reference/)를 확인하세요.
+    <ReadMore>자세한 내용은 Astro의 [API 구성 참조](/ko/reference/configuration-reference/)를 확인하세요.</ReadMore>
 
 6. TypeScript 지원을 추가합니다.
     
@@ -308,7 +305,7 @@ Astro는 기본적으로 최신 JavaScript를 지원하는 브라우저를 대�
     }
     ```
     
-    자세한 내용은 Astro의 [TypeScript 설정 가이드](/ko/guides/typescript/#설정)를 참조하세요.
+    <ReadMore>자세한 내용은 Astro의 [TypeScript 설정 가이드](/ko/guides/typescript/#설정)를 참조하세요.</ReadMore>
 
 7. 다음 단계
     

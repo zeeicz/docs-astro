@@ -18,7 +18,6 @@ import ReadMore from '~/components/ReadMore.astro';
 
 ```js
 import {
-  z,
   defineCollection,
   getCollection,
   getEntry,
@@ -38,7 +37,8 @@ import {
 `defineCollection()`은 `src/content.config.*` 파일에 컬렉션을 구성하는 유틸리티입니다.
 
 ```ts title="src/content.config.ts"
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -75,7 +75,7 @@ export const collections = { blog };
 <Since v="2.0.0" />
 </p>
 
-`schema`는 컬렉션에 대한 문서 프런트매터의 타입과 모양을 구성하는 선택적 Zod 객체입니다. 각 값은 [Zod 유효성 검사기](https://github.com/colinhacks/zod)를 사용해야 합니다.
+`schema`는 컬렉션에 대한 문서 프런트매터의 타입과 모양을 구성하는 선택적 Zod 객체입니다. 각 값은 [Zod 유효성 검사기](/ko/reference/modules/astro-zod/#일반적인-데이터-타입-유효성-검사기)를 사용해야 합니다.
 
 사용 예시는 [`콘텐츠 컬렉션` 가이드를 참조하세요](/ko/guides/content-collections/#컬렉션-스키마-정의).
 
@@ -92,7 +92,8 @@ export const collections = { blog };
 이 예시에서는 `authors` 컬렉션에 대한 블로그 작성자의 참조와 동일한 `blog` 컬렉션에 대한 관련 게시물 배열을 정의합니다.
 
 ```ts
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, reference } from "astro:content";
+import { z } from "astro/zod";
 import { glob, file } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -273,9 +274,11 @@ import type { CollectionEntry } from 'astro:content';
 
 #### `body`
 
-**타입:** `string`
+**타입:** `string | undefined`
 
 Markdown 또는 MDX 문서의 컴파일되지 않은 원시 본문을 포함하는 문자열입니다.
+
+[`retainBody`](/ko/reference/content-loader-reference/#retainbody)가 `false`로 설정된 경우, 이 값은 원본 파일 내용을 포함하는 대신 `undefined`가 됩니다.
 
 ### `CollectionKey`
 
@@ -302,7 +305,8 @@ async function queryCollection(collection: CollectionKey) {
 - `image` - [콘텐츠 컬렉션에서 로컬 이미지를 사용](/ko/guides/images/#콘텐츠-컬렉션의-이미지)할 수 있게 해주는 `image()` 스키마 도우미
 
 ```ts
-import { defineCollection, z, type SchemaContext } from "astro:content";
+import { defineCollection, type SchemaContext } from "astro:content";
+import { z } from "astro/zod";
 
 export const imageSchema = ({ image }: SchemaContext) =>
     z.object({

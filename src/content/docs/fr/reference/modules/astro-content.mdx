@@ -18,7 +18,6 @@ Les collections de contenu proposent des API pour configurer et interroger vos d
 
 ```js
 import { 
-  z,
   defineCollection,
   getCollection,
   getEntry,
@@ -38,7 +37,8 @@ import {
 `defineCollection()` est un utilitaire pour configurer une collection dans un fichier `src/content.config.*`.
 
 ```ts title="src/content.config.ts"
-import { z, defineCollection } from 'astro:content';
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -60,7 +60,7 @@ Cette fonction accepte les propriétés suivantes :
 
 <p>
 
-**Type :** <code>() => Promise&lt;Array&lt;\{ id: string, [key: string]: any }&gt; | Record&lt;string, Record&lt;string, any&gt;&gt;&gt; | <a href="/fr/reference/content-loader-reference/#api-du-chargeur-dobjets">Loader</a></code>
+**Type :** <code>() => Promise&lt;Array&lt;\{ id: string, [key: string]: any }&gt; | Record&lt;string, Record&lt;string, any&gt;&gt;&gt; | <a href="/fr/reference/content-loader-reference/#api-des-chargeurs-sous-forme-dobjet">Loader</a></code>
 <Since v="5.0.0" />
 </p>
 
@@ -76,7 +76,7 @@ Un `loader` est soit un objet, soit une fonction qui vous permet de charger des 
 <Since v="2.0.0" />
 </p>
 
-`schema` est un objet Zod facultatif pour configurer le type et la forme du document pour une collection. Chaque valeur doit utiliser [un validateur Zod](https://github.com/colinhacks/zod).
+`schema` est un objet Zod facultatif pour configurer le type et la forme du document pour une collection. Chaque valeur doit utiliser [un validateur Zod](/fr/reference/modules/astro-zod/#validateurs-de-types-de-données-courants).
 
 [Consultez le guide Collections de contenu](/fr/guides/content-collections/#définition-dun-schéma-de-collection) pour un exemple d'utilisation.
 
@@ -94,7 +94,8 @@ La fonction `reference()` est utilisée dans la configuration du contenu pour d�
 Cet exemple définit les références d'un auteur de blog à la collection `authors` et un tableau d'articles associés à la même collection `blog` :
 
 ```ts
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, reference } from "astro:content";
+import { z } from "astro/zod";
 import { glob, file } from 'astro/loaders';
 
 const blog = defineCollection({
@@ -133,7 +134,7 @@ const relatedPosts = await getEntries(blogPost.data.relatedPosts);
 
 `getCollection()` est une fonction qui récupère une liste d'entrées de collection de contenu par nom de collection.
 
-Il renvoie tous les éléments de la collection par défaut et accepte une fonction facultative `filter` pour affiner les propriétés d'entrée. Cela vous permet d'interroger uniquement certains éléments d'une collection en fonction de `id` ou des valeurs du frontmatter via l'objet `data`.
+Elle renvoie tous les éléments de la collection par défaut et accepte une fonction facultative `filter` pour affiner les propriétés d'entrée. Cela vous permet d'interroger uniquement certains éléments d'une collection en fonction de `id` ou des valeurs du frontmatter via l'objet `data`.
 
 ```astro
 ---
@@ -170,7 +171,7 @@ import { getEntry } from 'astro:content';
 // Récupère `src/content/blog/enterprise.md`
 const enterprisePost = await getEntry('blog', 'enterprise');
 
-// Get `src/content/captains/picard.json`
+// Récupère `src/content/captains/picard.json`
 const picardProfile = await getEntry('captains', 'picard');
 
 // Récupère le profil référencé par `data.captain`
@@ -213,7 +214,7 @@ Une fonction permettant de compiler une entrée donnée pour le rendu. Elle renv
 
 - `<Content />` - Un composant utilisé pour restituer le contenu du document dans un fichier Astro.
 - `headings` - Une liste générée de titres, [reflétant l'utilitaire `getHeadings()` d'Astro](/fr/guides/markdown-content/#propriétés-disponibles) sur les importations Markdown et MDX.
-- `remarkPluginFrontmatter ` - L'objet frontmatter modifié après que tous les [plugins Remark ou Rehype ont été appliqués](/fr/guides/markdown-content/#modification-programmatique-du-frontmatter). Définit sur le type `any`.
+- `remarkPluginFrontmatter ` - L'objet frontmatter modifié après que tous les [modules d'extension Remark ou Rehype ont été appliqués](/fr/guides/markdown-content/#modification-programmatique-du-frontmatter). Définit sur le type `any`.
 
 ```astro
 ---
@@ -275,9 +276,11 @@ Un objet de propriétés provenant du frontmatter et déduit de votre schéma de
 
 #### `body`
 
-**Type :** `string`
+**Type :** `string | undefined`
 
 Une chaîne de caractères contenant le corps brut et non compilé du document Markdown ou MDX.
+
+Notez que si [`retainBody`](/fr/reference/content-loader-reference/#retainbody) est défini sur `false`, cette valeur sera `undefined` au lieu de contenir le contenu brut du fichier.
 
 ### `CollectionKey`
 
@@ -304,7 +307,8 @@ Il inclut la propriété suivante :
 - `image` - L'assistant de schéma `image()` qui vous permet [d'utiliser des images locales dans les collections de contenu](/fr/guides/images/#images-dans-les-collections-de-contenu)
 
 ```ts
-import { defineCollection, z, type SchemaContext } from "astro:content";
+import { defineCollection, type SchemaContext } from "astro:content";
+import { z } from "astro/zod";
 
 export const imageSchema = ({ image }: SchemaContext) =>
     z.object({

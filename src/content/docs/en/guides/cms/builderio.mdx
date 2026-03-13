@@ -4,11 +4,12 @@ description: Add content to your Astro project using Builder.io’s visual CMS
 sidebar:
   label: Builder.io
 type: cms
-service: Builder.io
+logo: builderio
 stub: false
 i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import ReadMore from '~/components/ReadMore.astro';
 import { FileTree } from '@astrojs/starlight/components';
 import { Steps } from '@astrojs/starlight/components';
 
@@ -57,6 +58,7 @@ Your project should now include these files:
 - package.json
 </FileTree>
 
+<ReadMore>Learn more about [environment variables](/en/guides/environment-variables/) and `.env` files in Astro.</ReadMore>
 
 ## Making a blog with Astro and Builder
 
@@ -172,7 +174,7 @@ Things can sometimes go wrong when setting up the preview. If something's not ri
 * Make sure the site is live - for example, your dev server is running.
 * Make sure that the URLs match exactly - the one in your Astro project and the one set in the Builder app.
 * Make sure it's the full URL including the protocol, for example `https://`.
-* If you're working in a virtual environment like [IDX](https://idx.dev), [StackBlitz](https://stackblitz.com/), or [Gitpod](https://www.gitpod.io/), you might have to copy and paste the URL again when you restart your workspace, since this usually generates a new URL for your project.
+* If you're working in a virtual environment like [Firebase Studio](https://studio.firebase.google.com/) or [StackBlitz](https://stackblitz.com/), you might have to copy and paste the URL again when you restart your workspace, since this usually generates a new URL for your project.
 
 For more ideas, read [Builder's troubleshooting guide](https://www.builder.io/c/docs/guides/preview-url-working).
 :::
